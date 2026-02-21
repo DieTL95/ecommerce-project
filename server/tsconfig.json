@@ -1,0 +1,17 @@
+{
+"compilerOptions": {
+ "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "target": "es2024",
+    "outDir": "dist",
+    "rootDir": ".",
+    "strict": true,
+     "allowImportingTsExtensions": true,
+             "verbatimModuleSyntax": true,
+     "allowSyntheticDefaultImports": true,
+    "noEmit": true,
+},
+"include": ["**/*"],
+"exclude": ["node_modules"],
+
+}

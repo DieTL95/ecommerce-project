@@ -1,0 +1,9 @@
+import { createFileRoute } from '@tanstack/react-router'
+
+export const Route = createFileRoute('/address-book/new-address')({
+  component: RouteComponent,
+})
+
+function RouteComponent() {
+  return <div>Hello "/address-book/new-address"!</div>
+}

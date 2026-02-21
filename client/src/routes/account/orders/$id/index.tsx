@@ -1,0 +1,47 @@
+import { fetchOrderById } from "@/zactions/orderActions";
+import { createFileRoute, notFound } from "@tanstack/react-router";
+
+export const Route = createFileRoute("/account/orders/$id/")({
+  component: RouteComponent,
+  loader: async ({ params }) => {
+    const data = await fetchOrderById(params.id);
+    if (!data) {
+      throw notFound();
+    }
+    return data;
+  },
+  notFoundComponent: () => {
+    return <div>Order doesn't eixst</div>;
+  },
+});
+
+function RouteComponent() {
+  const order = Route.useLoaderData();
+  return (
+    <div>
+      <div>Order Status: {order.status}</div>
+      {order.order_items?.map((item) => (
+        <div className="flex flex-row" key={item.id}>
+          {item.product.images && (
+            <div>
+              <img
+                style={{
+                  height: "150px",
+                  width: "150px",
+                  objectFit: "fill",
+                }}
+                src={item.product.images[0].secure_url}
+                alt={item.product.name}
+              />
+            </div>
+          )}
+          <div>
+            <span>{item.product.name}</span>
+          </div>
+          <div>{item.price}</div>
+          <div>{item.quantity}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
