@@ -16,6 +16,7 @@ const FindAndInputField = ({ label, props }: Props) => {
   const [loading, setLoading] = useState(true);
   const [entryState, setEntryState] = useState<string>();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [focusedMenuIndex, setFocusedMenuIndex] = useState<number>(0);
   const menuRef = useRef<HTMLDivElement>(null);
   const entryRef = useRef<HTMLInputElement>(null);
   const field = useFieldContext<{ name: string; id?: string }[]>();
@@ -119,8 +120,37 @@ const FindAndInputField = ({ label, props }: Props) => {
     };
     name();
   }, []);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (focusedMenuIndex === 0) {
+        handleNew();
+      } else {
+        handleClick(dataList[focusedMenuIndex - 1]);
+      }
+      setDataList([]);
+      setIsMenuOpen(false);
+      setEntryState("");
+      setFocusedMenuIndex(0);
+    }
+    const menu = menuRef.current?.children;
+    if (e.key === "ArrowDown" && menu) {
+      setFocusedMenuIndex((prev) =>
+        focusedMenuIndex === menu.length - 1 ? 0 : prev + 1,
+      );
+    } else if (e.key === "ArrowUp" && menu) {
+      setFocusedMenuIndex((prev) =>
+        focusedMenuIndex === 0 ? menu.length - 1 : prev - 1,
+      );
+    } else if (e.key === "Escape") {
+      setIsMenuOpen(false);
+      setFocusedMenuIndex(0);
+    }
+  };
+
   return (
-    <div className="flex flex-col max-w-[400px]  p-4 relative">
+    <div className="flex flex-col max-w-[400px] relative">
       {field.state.meta.errors.length > 0 && (
         <em role="alert" className="mt-2">
           {field.state.meta.errors.map((error, index) => (
@@ -153,6 +183,7 @@ const FindAndInputField = ({ label, props }: Props) => {
             type="text"
             id={field.name}
             placeholder=" "
+            onKeyDown={handleKeyDown}
             ref={entryRef}
             onChange={debounce(handleChange, 500)}
             autoComplete="off"
@@ -173,7 +204,7 @@ const FindAndInputField = ({ label, props }: Props) => {
       {isMenuOpen && (
         <div
           className={cn(
-            "hidden absolute -bottom-6 left-4 w-full overflow-y-scroll max-h-[200px] **:odd:bg-neutral-800 **:even:bg-neutral-600 bg-neutral-600 border border-neutral-400 **:px-4 **:py-2  flex-col",
+            "hidden absolute top-14 z-50 left-4 w-full rounded-md overflow-y-scroll max-h-[200px] **:hover:bg-neutral-700 **:border-b **:border-b-neutral-500 **:cursor-pointer bg-neutral-800 px-2 border border-neutral-500 drop-shadow-xl drop-shadow-black **:px-4 **:py-2  flex-col",
             isMenuOpen && "flex",
           )}
           ref={menuRef}
@@ -182,12 +213,25 @@ const FindAndInputField = ({ label, props }: Props) => {
             <div>loading...</div>
           ) : (
             <>
-              <div onClick={handleNew}>Create new: {entryState}</div>
-              {dataList.map((item) => (
+              <div
+                onClick={handleNew}
+                className={cn(
+                  focusedMenuIndex === 0
+                    ? " !border-b-2 border-b-neutral-300! bg-neutral-600 rounded-t-md "
+                    : "",
+                )}
+              >
+                Create New: {entryState}
+              </div>
+              {dataList.map((item, index) => (
                 <div
                   key={item.name}
                   onClick={() => handleClick(item)}
-                  className=" cursor-pointer  w-full"
+                  className={cn(
+                    "  w-full",
+                    focusedMenuIndex === index + 1 &&
+                      "!border-b-2 border-b-neutral-300! bg-neutral-600 rounded-t-md ",
+                  )}
                 >
                   {item.name}
                 </div>

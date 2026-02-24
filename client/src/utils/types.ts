@@ -106,6 +106,13 @@ export interface Products {
   quantity: number | null;
 }
 
+export interface CountedResults<A> {
+  results: A[];
+  total: number;
+  pages: number;
+  nextPage: boolean;
+}
+
 export interface Addresses {
   address_one: string;
   address_two: string;

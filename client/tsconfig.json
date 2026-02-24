@@ -6,6 +6,7 @@
   ],
   "compilerOptions": {
       "module": "ESNext",
+          "types": ["@types/cloudinary-uploadwidget-browser"],
   "moduleResolution": "Node",
    "baseUrl": "./",
    "paths": { "@/*": ["./src/*"],

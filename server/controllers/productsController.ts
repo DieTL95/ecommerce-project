@@ -1,19 +1,23 @@
 import { db } from "../database.ts";
-import { response, type Request, type Response } from "express";
-import { v2 as cloudinary } from "cloudinary";
-import type { FileWithPath, Images } from "../utils/types.ts";
-import { NotFoundError, UnauthorisedError } from "../errors/customErrors.ts";
-import { sql } from "kysely";
+import { type Request, type Response } from "express";
+
 import { sqlJSON } from "../utils/utils.ts";
 import { jsonArrayFrom } from "kysely/helpers/postgres";
+import getPages from "../utils/getPages.ts";
 
 export const getAllProducts = async (req: Request, res: Response) => {
-  const prods = await db
+  const prods = db
     .selectFrom("products")
     .$if(!!req.query.q, (eb) => eb.where("name", "ilike", `${req.query.q}%`))
-    .selectAll()
-    .execute();
-  return res.status(200).json(prods);
+
+    .selectAll();
+
+  const results = await getPages(
+    prods,
+    (Number(req.query.page) - 1) * 10 || 0,
+    Number(req.query.limit) || 10,
+  );
+  return res.status(200).json(results);
 };
 
 export const createProduct = async (req: Request, res: Response) => {

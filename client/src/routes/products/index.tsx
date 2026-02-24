@@ -1,13 +1,30 @@
+import ProductCard from "@/components/Products/ProductCard";
 import AddToCartButton from "@/components/UI/AddToCartButton";
 import MainWrapper from "@/components/UI/MainWrapper";
+import Pagination from "@/components/UI/Pagination";
+import { productSearchSchema } from "@/schemas/productSchema";
 import { fetchProducts } from "@/utils/actions";
-import type { Products } from "@/utils/types";
-import { dollarsPrice } from "@/utils/utils";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import type { CountedResults, Products } from "@/utils/types";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/products/")({
   component: RouteComponent,
-  loader: async () => await fetchProducts(),
+  validateSearch: productSearchSchema,
+  loaderDeps: ({ search }) => search,
+
+  loader: async ({ deps }) => {
+    const data = await fetchProducts(deps.page);
+    if (!data) {
+      throw notFound();
+    }
+    if (deps.page && deps.page > data.pages) {
+      throw notFound();
+    }
+    return data;
+  },
+  notFoundComponent: () => {
+    return <div>No products found.</div>;
+  },
   head: () => ({
     meta: [
       { name: "Products", content: "The products." },
@@ -17,41 +34,30 @@ export const Route = createFileRoute("/products/")({
 });
 
 function RouteComponent() {
-  const products: Products[] = Route.useLoaderData();
-
-  if (!products) {
-    return <div>Couldn't found nothing</div>;
-  }
+  const products: CountedResults<Products> = Route.useLoaderData();
+  const { page } = Route.useSearch();
 
   return (
     <MainWrapper>
       <div className="w-full flex ">
         <div className="w-full flex flex-col  my-2 ">
           <div className="grid-cols-4 grid gap-2 h-full">
-            {products.map((product) => (
-              <div key={product.name} className="bg-black w-full h-full ">
+            {products.results.map((product) => (
+              <div key={product.id} className="bg-black w-full h-full ">
                 <div className="mx-auto w-fit">
                   <Link
                     to="/products/$product"
                     params={{ product: product.id }}
                   >
-                    {product.images && product.images.length > 0 && (
-                      <img
-                        src={product.images[0].secure_url}
-                        alt={product.name}
-                        className="max-h-52 max-w-[150px]"
-                      />
-                    )}
-
-                    <div>{product.name}</div>
+                    <ProductCard product={product} />
                   </Link>
-                  <span>{dollarsPrice(product.price)}</span>
 
                   <AddToCartButton product={product} />
                 </div>
               </div>
             ))}
           </div>
+          <Pagination pages={products.pages} currentPage={page || 1} />
         </div>
       </div>
     </MainWrapper>

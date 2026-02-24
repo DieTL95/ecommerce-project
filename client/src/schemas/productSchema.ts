@@ -31,3 +31,7 @@ export const productSchema = z.object({
     .nullable()
     .optional(),
 });
+
+export const productSearchSchema = z.object({
+  page: z.number().optional().catch(1),
+});

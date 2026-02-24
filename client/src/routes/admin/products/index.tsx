@@ -1,13 +1,21 @@
+import { productSearchSchema } from "@/schemas/productSchema";
 import { fetchProducts } from "@/utils/actions";
 import { dollarsPrice } from "@/utils/utils";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-
+import ProductThumbnail from "@/components/UI/ProductThumbnail";
+import Pagination from "@/components/UI/Pagination";
 export const Route = createFileRoute("/admin/products/")({
   component: RouteComponent,
-  loader: async () => {
-    const data = await fetchProducts();
+  validateSearch: productSearchSchema,
+
+  loaderDeps: ({ search }) => search,
+  loader: async ({ deps }) => {
+    const data = await fetchProducts(deps.page);
     if (!data) {
-      notFound();
+      throw notFound();
+    }
+    if (deps.page && deps.page > data.pages) {
+      throw notFound();
     }
     return data;
   },
@@ -24,10 +32,11 @@ export const Route = createFileRoute("/admin/products/")({
 
 function RouteComponent() {
   const products = Route.useLoaderData();
-
+  const { page } = Route.useSearch();
+  console.log(products);
   return (
     <div className="flex flex-col gap-2 w-full">
-      {products?.map((prod) => (
+      {products.results.map((prod) => (
         <Link
           to="/admin/products/$id"
           params={{ id: prod.id }}
@@ -36,17 +45,14 @@ function RouteComponent() {
         >
           <div className="flex flex-row gap-4">
             {prod.images && prod.images.length > 0 && (
-              <img
-                src={prod.images[0].secure_url}
-                alt={prod.name}
-                className="max-h-52 max-w-[150px]"
-              />
+              <ProductThumbnail imageId={prod.images[0].public_id} />
             )}
             <div>{prod.name}</div>
             <span>{dollarsPrice(prod.price)}</span>
           </div>
         </Link>
       ))}
+      <Pagination pages={products.pages} currentPage={page || 1} />
     </div>
   );
 }

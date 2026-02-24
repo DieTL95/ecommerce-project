@@ -27,9 +27,9 @@ export const Route = createFileRoute("/admin")({
 function AdminLayoutComponent() {
   return (
     <MainWrapper>
-      <div className="w-full flex justify-center items-center gap-2 my-4">
-        <div className="h-full flex-1/6 border-r border-black">
-          <ul className="w-full h-full flex-col flex items-start justify-center gap-10">
+      <div className="w-full h-full flex flex-row  justify-center items-center  gap-2 my-4">
+        <div className="h-full flex-1/6 border-r   border-black">
+          <ul className="w-full h-full flex-col flex items-start justify-start gap-10">
             <li>
               <Link to="/admin/products" className="[&.active]:font-bold">
                 Products List
@@ -75,7 +75,7 @@ function AdminLayoutComponent() {
             </li>
           </ul>
         </div>
-        <div className="w-full h-full flex-5/6 flex justify-center items-center">
+        <div className="w-full h-full flex-5/6 flex  justify-center items-center">
           <Outlet />
         </div>
       </div>

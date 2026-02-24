@@ -7,6 +7,8 @@ export const getAllCategories = async (req: Request, res: Response) => {
   const catgs = await db
     .selectFrom("categories")
     .$if(!!req.query, (eb) => eb.where("name", "ilike", `${req.query.q}%`))
+    .offset(Number(req.query.offSet) || 0)
+    .fetch(Number(req.query.limit) || 10)
     .selectAll()
     .execute();
 
