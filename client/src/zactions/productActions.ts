@@ -1,22 +1,30 @@
 import { productSchema } from "@/schemas/productSchema";
-import type { Images, Products } from "@/utils/types";
+import type { CountedResults, Images, Products } from "@/utils/types";
 import { z } from "zod";
-export const fetchProducts = async (query?: string) => {
+
+export const fetchProducts = async (queries: {
+  [key: string]: unknown | undefined;
+}) => {
+  console.log(queries);
+  const urlQuery = new URLSearchParams();
+  for (const [key, val] of Object.entries(queries)) {
+    if (val) {
+      urlQuery.append(key, val.toString());
+    }
+  }
+
   try {
-    const res = await fetch(
-      `http://localhost:5100/api/products${query ? `?q=${query}` : ""}`,
-      {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
+    const res = await fetch(`http://localhost:5100/api/products?${urlQuery}`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
       },
-    );
+    });
     if (!res.ok) {
       throw new Error(res.statusText);
     }
-    const data: Products[] = await res.json();
+    const data: CountedResults<Products> = await res.json();
     console.log(data);
     return data;
   } catch (error) {

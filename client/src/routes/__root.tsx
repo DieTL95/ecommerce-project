@@ -1,6 +1,7 @@
 import CartComponent from "@/components/Cart/CartComponent";
 import Footer from "@/components/Footer";
 import NavBarComponent from "@/components/NavBar/NavBarComponent";
+import SearchComponent from "@/components/NavBar/SearchComponent";
 import UserNavBarComponent from "@/components/NavBar/UserNavBarComp";
 import type { useAuth } from "@/context/auth-context";
 import { type useCart } from "@/context/cart-context";
@@ -19,11 +20,11 @@ const RootLayout = () => (
     <div className=" w-full flex justify-center flex-col">
       <div className="p-2 flex gap-2 items-center justify-center ">
         <div className="max-w-[70vw] w-full justify-between flex flex-col gap-4 my-4">
-          <div className="flex flex-row w-full justify-between ">
+          <div className="flex flex-row w-full justify-between items-center">
             <Link to="/" className="[&.active]:font-bold">
               Home
             </Link>
-
+            <SearchComponent />
             <div className="flex flex-row gap-6">
               <Link to="/cart" className="[&.active]:font-bold">
                 <CartComponent />

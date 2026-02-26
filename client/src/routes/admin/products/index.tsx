@@ -1,16 +1,16 @@
 import { productSearchSchema } from "@/schemas/productSchema";
-import { fetchProducts } from "@/utils/actions";
 import { dollarsPrice } from "@/utils/utils";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import ProductThumbnail from "@/components/UI/ProductThumbnail";
 import Pagination from "@/components/UI/Pagination";
+import { fetchProducts } from "@/zactions/productActions";
 export const Route = createFileRoute("/admin/products/")({
   component: RouteComponent,
   validateSearch: productSearchSchema,
 
-  loaderDeps: ({ search }) => search,
+  loaderDeps: ({ search }) => ({q: search.q, page: search.page}),
   loader: async ({ deps }) => {
-    const data = await fetchProducts(deps.page);
+    const data = await fetchProducts(deps);
     if (!data) {
       throw notFound();
     }

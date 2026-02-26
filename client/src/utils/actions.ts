@@ -1,6 +1,6 @@
 import { loginSchema, registerationSchema } from "@/schemas/userSchema";
 import z from "zod";
-import type { Cart, CountedResults, Products } from "./types";
+import type { Cart, Products } from "./types";
 
 export const isAuthAction = async () => {
   try {
@@ -75,29 +75,6 @@ export const loginUserAction = async (
   } catch (error) {
     console.log("Error Data: ", error);
     return error;
-  }
-};
-
-export const fetchProducts = async (page?: number) => {
-  try {
-    const res = await fetch(
-      `http://localhost:5100/api/products?${page ? `page=${page}` : ""}`,
-      {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
-      },
-    );
-    if (!res.ok) {
-      throw new Error(res.statusText);
-    }
-    const data: CountedResults<Products> = await res.json();
-    console.log(data);
-    return data;
-  } catch (error) {
-    console.log("error: ", error);
   }
 };
 

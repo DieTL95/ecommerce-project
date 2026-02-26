@@ -22,9 +22,9 @@ const ProductsModal = ({
 
   useEffect(() => {
     const getProducts = async () => {
-      const data = await fetchProducts(query?.trim());
+      const data = await fetchProducts({ query: query?.trim() });
       if (data) {
-        setProducts(data);
+        setProducts(data.results);
       }
     };
 

@@ -34,4 +34,5 @@ export const productSchema = z.object({
 
 export const productSearchSchema = z.object({
   page: z.number().optional().catch(1),
+  q: z.string().optional(),
 });

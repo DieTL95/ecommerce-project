@@ -3,17 +3,15 @@ import AddToCartButton from "@/components/UI/AddToCartButton";
 import MainWrapper from "@/components/UI/MainWrapper";
 import Pagination from "@/components/UI/Pagination";
 import { productSearchSchema } from "@/schemas/productSchema";
-import { fetchProducts } from "@/utils/actions";
-import type { CountedResults, Products } from "@/utils/types";
+import { fetchProducts } from "@/zactions/productActions";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/products/")({
   component: RouteComponent,
   validateSearch: productSearchSchema,
-  loaderDeps: ({ search }) => search,
-
+  loaderDeps: ({ search }) => ({ q: search.q, page: search.page }),
   loader: async ({ deps }) => {
-    const data = await fetchProducts(deps.page);
+    const data = await fetchProducts(deps);
     if (!data) {
       throw notFound();
     }
@@ -34,7 +32,7 @@ export const Route = createFileRoute("/products/")({
 });
 
 function RouteComponent() {
-  const products: CountedResults<Products> = Route.useLoaderData();
+  const products = Route.useLoaderData();
   const { page } = Route.useSearch();
 
   return (
