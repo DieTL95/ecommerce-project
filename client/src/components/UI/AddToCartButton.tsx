@@ -21,11 +21,11 @@ const AddToCartButton = ({ product }: { product: Products }) => {
           onClick={() => {
             addToCart(1, product);
           }}
-          className="w-full rounded-xl bg-black text-md text-white py-2 cursor-pointer flex justify-center items-center hover:bg-white/20"
+          className="w-full rounded-xl bg-black text-lg text-white py-2 cursor-pointer flex justify-center items-center hover:bg-white/20"
           label="Add To Cart"
         />
       ) : (
-        <>
+        <div className="w-full h-full items-center flex justify-between gap-2">
           <CartButton
             loading={loading}
             onClick={() => {
@@ -45,7 +45,7 @@ const AddToCartButton = ({ product }: { product: Products }) => {
             }}
             label="+"
           />
-        </>
+        </div>
       )}
     </div>
   );

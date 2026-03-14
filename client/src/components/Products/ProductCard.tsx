@@ -1,5 +1,5 @@
 import type { Products } from "@/utils/types";
-import { dollarsPrice } from "@/utils/utils";
+import { truncateTitle, capitaliseTitle, dollarsPrice } from "@/utils/utils";
 import ProductThumbnail from "../UI/ProductThumbnail";
 
 const ProductCard = ({ product }: { product: Products }) => {
@@ -13,8 +13,10 @@ const ProductCard = ({ product }: { product: Products }) => {
             </div>
           )}
         </div>
-        <div className="flex flex-row gap-4">
-          <div>{product.name}</div>
+        <div className="flex flex-col w-full h-full justify-center items-center gap-2">
+          <span className="hover:underline max-w-[230px]">
+            {truncateTitle(capitaliseTitle(product.name))}
+          </span>
           <span>{dollarsPrice(product.price)}</span>
         </div>
       </div>

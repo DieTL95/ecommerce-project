@@ -1,5 +1,5 @@
 @import "tailwindcss";
-
+@import 'react-inner-image-zoom/lib/styles.min.css';
 @theme {
 --animate-slow-spin: spin 2s linear infinite;
 }

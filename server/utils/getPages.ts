@@ -5,6 +5,7 @@ interface PageResult<O> {
   total: number;
   pages: number;
 }
+
 export async function getPages<O>(
   qb: SelectQueryBuilder<any, any, O>,
   offset: number,
@@ -24,6 +25,7 @@ export async function getPages<O>(
       .select((eb) => [eb.fn.countAll<number>().as("count")])
       .executeTakeFirstOrThrow(),
   ]);
+  console.log(total);
   return {
     results: res,
     total: total.count,

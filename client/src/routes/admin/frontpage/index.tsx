@@ -1,3 +1,4 @@
+import ProductThumbnail from "@/components/UI/ProductThumbnail";
 import { fetchAllFrontpages } from "@/zactions/frontpageActions";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 
@@ -30,7 +31,7 @@ function RouteComponent() {
           <Link
             to="/admin/frontpage/$id"
             params={{ id: page.id }}
-            className="p-4 border rounded-2xl border-gray-500/80 flex flex-col"
+            className="p-4 border rounded-2xl gap-4 border-gray-500/80 flex flex-col"
             key={page.id}
           >
             <div className="flex flex-row gap-4 w-full">
@@ -41,14 +42,9 @@ function RouteComponent() {
               {page.categories?.map((catg) => (
                 <div key={catg.id}>
                   {catg.images && (
-                    <img
-                      style={{
-                        height: "150px",
-                        width: "150px",
-                        objectFit: "contain",
-                      }}
-                      src={catg.images[0].secure_url}
-                      alt={catg.name}
+                    <ProductThumbnail
+                      width={100}
+                      imageId={catg.images[0].public_id}
                     />
                   )}
                 </div>
@@ -58,14 +54,9 @@ function RouteComponent() {
               {page.products?.map((product) => (
                 <div key={product.id}>
                   {product.images && (
-                    <img
-                      style={{
-                        height: "150px",
-                        width: "150px",
-                        objectFit: "fill",
-                      }}
-                      src={product.images[0].secure_url}
-                      alt={product.name}
+                    <ProductThumbnail
+                      width={100}
+                      imageId={product.images[0].public_id}
                     />
                   )}
                 </div>

@@ -1,5 +1,10 @@
 import type { categorySchema } from "@/schemas/categorySchema";
-import type { Categories, CountedResults, Images } from "@/utils/types";
+import type {
+  Categories,
+  CountedResults,
+  Images,
+  Products,
+} from "@/utils/types";
 import { z } from "zod";
 
 export const fetchCategories = async (queries: {
@@ -48,6 +53,42 @@ export const fetchOneCategory = async (id: string) => {
       throw new Error(res.statusText);
     }
     const data: Categories = await res.json();
+
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.log("error: ", error);
+  }
+};
+
+export const fetchOneCategoryProducts = async ({
+  id,
+  queries,
+}: {
+  id: string;
+  queries: { [key: string]: unknown | undefined };
+}) => {
+  try {
+    const urlQuery = new URLSearchParams();
+    for (const [key, val] of Object.entries(queries)) {
+      if (val) {
+        urlQuery.append(key, val.toString());
+      }
+    }
+    const res = await fetch(
+      `http://localhost:5100/api/categories/${id}/products?${urlQuery}`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      },
+    );
+    if (!res.ok) {
+      throw new Error(res.statusText);
+    }
+    const data: CountedResults<Products> = await res.json();
     console.log(data);
     return data;
   } catch (error) {

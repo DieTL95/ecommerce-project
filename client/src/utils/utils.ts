@@ -18,6 +18,13 @@ export const debounce = (cb: any, delay = 1000) => {
   };
 };
 
-export const capitalizeFirstLetter = (word: string) => {
-  return String(word).charAt(0).toUpperCase() + String(word).slice(1);
+export const capitaliseTitle = (title: string) => {
+  return title
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + String(word).slice(1))
+    .join(" ");
+};
+export const truncateTitle = (title: string) => {
+  const max = 50;
+  return title.length > max ? title.substring(0, max) + "..." : title;
 };

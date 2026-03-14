@@ -5,6 +5,7 @@ import {
   deleteCategory,
   getAllCategories,
   getOneCategory,
+  getOneCategoryProducts,
   getOneCatgAllProducts,
   removeCategoryFromProduct,
   updateCategory,
@@ -28,8 +29,8 @@ router
   .route("/:id/images")
   .patch(validateData(paramSchema), updateCategoryImages);
 router
-  .route("/products/:id")
-  .get(getOneCatgAllProducts)
+  .route("/:id/products")
+  .get(getOneCategoryProducts)
   .post(addCategoryToProduct)
   .delete(removeCategoryFromProduct);
 

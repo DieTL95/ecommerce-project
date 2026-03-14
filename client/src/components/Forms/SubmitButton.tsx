@@ -13,7 +13,7 @@ export const SubmitButton = ({ label }: { label?: string }) => {
           type="submit"
           disabled={!canSubmit || isSubmitSuccessful}
           className={cn(
-            "min-w-[400px] bg-black text-md text-white py-2 cursor-pointer flex justify-center items-center hover:bg-black/70",
+            "min-w-[400px] rounded-xl bg-black text-md text-white py-2 cursor-pointer flex justify-center items-center hover:bg-black/70",
             (!canSubmit || isSubmitSuccessful) &&
               "cursor-not-allowed bg-black/70",
           )}

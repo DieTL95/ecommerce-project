@@ -14,7 +14,11 @@ const CartButton = ({
   return (
     <button
       type="button"
-      className={cn("cursor-pointer", className, loading && "cursor-wait")}
+      className={cn(
+        "w-10 h-10 text-2xl m-1 rounded-2xl hover:bg-neutral-700 cursor-pointer",
+        className,
+        loading && "cursor-wait",
+      )}
       disabled={loading}
       onClick={onClick}
     >

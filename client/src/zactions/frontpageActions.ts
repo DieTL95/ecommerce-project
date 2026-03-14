@@ -107,3 +107,23 @@ export const updateFrontpageAction = async (id: string, data: Frontpage) => {
     return { error: true, message: `Image update failed. Error: ${error}` };
   }
 };
+
+export const deleteFrontpageAction = async (id: string) => {
+  try {
+    const res = await fetch(`http://localhost:5100/api/frontpage/${id}`, {
+      method: "DELETE",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
+    if (res.ok) {
+      const data: { message: string } = await res.json();
+      return { error: false, message: data.message };
+    }
+  } catch (error) {
+    console.log("error: ", error);
+    return { error: true, message: `Image update failed. Error: ${error}` };
+  }
+};

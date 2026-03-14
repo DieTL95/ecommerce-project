@@ -1,6 +1,6 @@
 import { useFieldContext } from "@/context/form-context";
 import type { Categories } from "@/utils/types";
-import { capitalizeFirstLetter, debounce } from "@/utils/utils";
+import { capitaliseTitle, debounce } from "@/utils/utils";
 import { fetchCategories } from "@/zactions/catgeoriesActions";
 import { cn } from "@sglara/cn";
 import { useEffect, useRef, useState } from "react";
@@ -75,9 +75,7 @@ const FindAndInputField = ({ label, props }: Props) => {
         setInputs((prev) => [
           ...prev,
           {
-            name: capitalizeFirstLetter(
-              entryState?.toLowerCase().trim() as string,
-            ),
+            name: capitaliseTitle(entryState?.toLowerCase().trim() as string),
           },
         ]);
         entry.value = "";

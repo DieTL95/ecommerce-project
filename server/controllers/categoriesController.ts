@@ -38,15 +38,40 @@ export const getOneCategory = async (req: Request, res: Response) => {
   return res.status(200).json(catg);
 };
 
-export const getCategoryByQuery = async (req: Request, res: Response) => {
-  const catg = await db
-    .selectFrom("categories")
-    .$if(!!req.query.q, (eb) =>
-      eb.where((eb) => eb.or([eb("name", "ilike", req.body)])),
+export const getOneCategoryProducts = async (req: Request, res: Response) => {
+  const catg = db
+    .selectFrom("product_category")
+    .where("product_category.category_id", "=", req.params.id)
+    .leftJoinLateral(
+      (eb) =>
+        eb
+          .selectFrom("products")
+          .whereRef("products.id", "=", "product_category.product_id")
+          .groupBy("products.id")
+
+          .selectAll()
+          .as("products"),
+      (join) => join.onTrue(),
     )
-    .selectAll()
-    .execute();
-  return res.status(200).json(catg);
+
+    .selectAll();
+  const [results, total] = await Promise.all([
+    catg
+      .offset((Number(req.query.page) - 1) * 12 || 0)
+      .limit(Number(req.query.limit) || 12)
+
+      .execute(),
+    catg
+      .clearSelect()
+      .select((eb) => [eb.fn.countAll<number>().as("count")])
+      .executeTakeFirstOrThrow(),
+  ]);
+
+  return res.status(200).json({
+    results,
+    total: total.count,
+    pages: Math.ceil(total.count / 12),
+  });
 };
 
 export const createCategory = async (req: Request, res: Response) => {

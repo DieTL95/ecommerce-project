@@ -3,9 +3,11 @@ import CheckboxField from "@/components/Forms/CheckboxField";
 import ProductSelectField from "@/components/Forms/ProductSelectField";
 import { SubmitButton } from "@/components/Forms/SubmitButton";
 import TextField from "@/components/Forms/TextField";
+import Button from "@/components/UI/Button";
 import { fieldContext, formContext } from "@/context/form-context";
 import type { Frontpage } from "@/utils/types";
 import {
+  deleteFrontpageAction,
   fetchOneFrontpage,
   updateFrontpageAction,
 } from "@/zactions/frontpageActions";
@@ -49,9 +51,22 @@ const { useAppForm } = createFormHook({
 });
 function RouteComponent() {
   const page = Route.useLoaderData();
+  const navigate = Route.useNavigate();
   if (!page.products) {
     throw notFound();
   }
+
+  const deleteHandler = async () => {
+    if (confirm("Are you sure you want to delete this frontpage?")) {
+      const res = await deleteFrontpageAction(page.id);
+      if (!res || res.error) {
+        toast(`Deletion failed. Error: ${res?.message}`);
+      } else {
+        toast.success(res.message);
+        navigate({ to: ".." });
+      }
+    }
+  };
 
   const form = useAppForm({
     onSubmit: async ({ value }) => {
@@ -99,6 +114,14 @@ function RouteComponent() {
         />
 
         <SubmitButton />
+        <div>
+          <Button
+            className="bg-red-800 hover:bg-red-800/80"
+            onClick={deleteHandler}
+          >
+            Delete
+          </Button>
+        </div>
       </form.AppForm>
     </form>
   );

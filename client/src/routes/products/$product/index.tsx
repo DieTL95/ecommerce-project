@@ -1,8 +1,11 @@
 import AddToCartButton from "@/components/UI/AddToCartButton";
 import MainWrapper from "@/components/UI/MainWrapper";
+import ProductThumbnail from "@/components/UI/ProductThumbnail";
 import { fetchOneProduct } from "@/utils/actions";
-import { dollarsPrice } from "@/utils/utils";
+import { capitaliseTitle, dollarsPrice } from "@/utils/utils";
 import { createFileRoute, notFound } from "@tanstack/react-router";
+import { useState } from "react";
+import InnerImageZoom from "react-inner-image-zoom";
 
 export const Route = createFileRoute("/products/$product/")({
   component: RouteComponent,
@@ -24,6 +27,7 @@ export const Route = createFileRoute("/products/$product/")({
 });
 
 function RouteComponent() {
+  const [currentImage, setCurrentImage] = useState(0);
   const data = Route.useLoaderData();
   if (!data) {
     return <div>Such product doesn't exist</div>;
@@ -32,28 +36,45 @@ function RouteComponent() {
   return (
     <MainWrapper>
       <div className="w-full flex flex-col justify-center items-center">
-        <div className="w-full flex flex-row">
-          <div className="flex-3/4 flex flex-row justify-center">
+        <div className="w-[90%] flex flex-row">
+          <div className="flex-3/4 flex flex-row  justify-center">
             {data.images && data.images.length > 0 && (
               <div className="flex flex-row gap-2">
                 <div className="flex flex-col gap-2">
-                  {data.images.map((img) => (
-                    <img src={img.secure_url} className="max-w-[50px]" />
+                  {data.images.map((img, index) => (
+                    <div
+                      key={img.public_id}
+                      onClick={() => setCurrentImage(index)}
+                    >
+                      <ProductThumbnail
+                        imageId={img.public_id}
+                        width={50}
+                        height={75}
+                      />
+                    </div>
                   ))}
                 </div>
-
-                <img
-                  src={data.images[0].secure_url}
-                  className="max-w-[350px]"
-                />
+                <div className="max-w-[450px]">
+                  <InnerImageZoom
+                    className="max-w-[350px]"
+                    src={data.images[currentImage].secure_url}
+                  />
+                </div>
+                {/* <ProductThumbnail
+                  imageId={data.images[currentImage].public_id}
+                  width={350}
+                  height={525}
+                /> */}
               </div>
             )}
           </div>
-          <div className="flex flex-col flex-1/4">
-            <div>{data.name}</div>
+          <div className="flex flex-col flex-1/4 gap-4">
+            <div className="font-serif text-xl">
+              {capitaliseTitle(data.name)}
+            </div>
             <div>{dollarsPrice(data.price)}</div>
-            <div>{data.description}</div>
             <AddToCartButton product={data} />
+            <div>{data.description}</div>
           </div>
         </div>
       </div>

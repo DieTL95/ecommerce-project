@@ -1,13 +1,22 @@
 import ProductCard from "@/components/Products/ProductCard";
 import ProductsRow from "@/components/Products/ProductsRow";
 import MainWrapper from "@/components/UI/MainWrapper";
-import { fetchOneCategory } from "@/zactions/catgeoriesActions";
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import Pagination from "@/components/UI/Pagination";
+import { productSearchSchema } from "@/schemas/productSchema";
+import { fetchOneCategoryProducts } from "@/zactions/catgeoriesActions";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/$category/")({
   component: RouteComponent,
-  loader: async ({ params }) => {
-    const data = await fetchOneCategory(params.category);
+
+  validateSearch: productSearchSchema,
+
+  loaderDeps: ({ search }) => ({ page: search.page }),
+  loader: async ({ deps, params }) => {
+    const data = await fetchOneCategoryProducts({
+      id: params.category,
+      queries: deps,
+    });
     if (!data) {
       throw notFound();
     }
@@ -18,13 +27,22 @@ export const Route = createFileRoute("/$category/")({
 
 function RouteComponent() {
   const data = Route.useLoaderData();
+  const { page } = Route.useSearch();
+
   return (
     <MainWrapper>
       <ProductsRow>
-        {data.products.map((prod) => (
-          <ProductCard key={prod.id} product={prod} />
+        {data.results.map((prod) => (
+          <Link
+            key={prod.id}
+            to="/products/$product"
+            params={{ product: prod.id }}
+          >
+            <ProductCard key={prod.id} product={prod} />
+          </Link>
         ))}
       </ProductsRow>
+      <Pagination pages={data.pages} currentPage={page || 1} />
     </MainWrapper>
   );
 }

@@ -1,6 +1,6 @@
 import { cld } from "@/utils/cloudinary";
 import { AdvancedImage } from "@cloudinary/react";
-import { fill } from "@cloudinary/url-gen/actions/resize";
+import { fit } from "@cloudinary/url-gen/actions/resize";
 
 const ProductThumbnail = ({
   imageId,
@@ -12,10 +12,9 @@ const ProductThumbnail = ({
   height?: number;
 }) => {
   const image = cld.image(imageId).resize(
-    fill()
+    fit()
       .width(width || 330)
-      .height(height || 345)
-      .gravity("face"),
+      .height(height || 345),
   );
   return <AdvancedImage cldImg={image} />;
 };
