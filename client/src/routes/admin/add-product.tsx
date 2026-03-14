@@ -10,6 +10,10 @@ import toast from "react-hot-toast";
 import NumberField from "@/components/Forms/NumberField";
 import z from "zod";
 import FindAndInputField from "@/components/Forms/FindAndInputField";
+import ImageInput from "@/components/ImageTools/ImageInput";
+import ReorderImages from "@/components/ImageTools/ReorderImages";
+import { useEffect, useState } from "react";
+import type { Images } from "@/utils/types";
 export const Route = createFileRoute("/admin/add-product")({
   component: RouteComponent,
 });
@@ -31,7 +35,10 @@ const defaults: z.infer<typeof productSchema> = {
 };
 
 function RouteComponent() {
+  const [list, setList] = useState<Images[]>([]);
+  const [defaultName, setDefaultName] = useState<string>(" ");
   const navigate = Route.useNavigate();
+
   const form = useAppForm({
     defaultValues: defaults,
     // validators: {
@@ -40,7 +47,8 @@ function RouteComponent() {
 
     onSubmit: async ({ value }) => {
       console.log(value);
-
+      value.images = list;
+      value.name = value.name.toLowerCase();
       const res = await addProduct(value);
       if (res?.message) {
         toast(res.message);
@@ -51,7 +59,9 @@ function RouteComponent() {
       }
     },
   });
-
+  useEffect(() => {
+    form.reset({ ...defaults, name: defaultName }, { keepDefaultValues: true });
+  }, [defaultName]);
   return (
     <form
       onSubmit={(e) => {
@@ -77,6 +87,14 @@ function RouteComponent() {
         <form.AppField
           name="categories"
           children={(field) => <field.FindAndInputField label="Categories" />}
+        />
+
+        <ReorderImages list={list} setList={setList} />
+        <ImageInput
+          label="Images"
+          maxFiles={list ? 5 - list.length : 5}
+          setList={setList}
+          setName={setDefaultName}
         />
 
         <SubmitButton />

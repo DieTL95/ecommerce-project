@@ -47,10 +47,12 @@ const FindAndInputField = ({ label, props }: Props) => {
       setIsMenuOpen(false);
       setEntryState("");
     } else {
-      const res = await fetchCategories(target.value);
+      const res = await fetchCategories({ q: target.value });
       if (res) {
         setDataList(() =>
-          res.filter((x) => !inputs.some((item) => item.name === x.name)),
+          res.results.filter(
+            (x) => !inputs.some((item) => item.name === x.name),
+          ),
         );
       }
     }
@@ -62,9 +64,14 @@ const FindAndInputField = ({ label, props }: Props) => {
     console.log(entry?.value);
     if (entry?.value) {
       if (
-        !inputs.some((x) => x.name === entry.value) &&
-        !dataList.some((x) => x.name === entry.value)
+        !inputs.some(
+          (x) => x.name.toLowerCase() == entry.value.trim().toLowerCase(),
+        ) &&
+        !dataList.some(
+          (x) => x.name.toLowerCase() == entry.value.trim().toLowerCase(),
+        )
       ) {
+        console.log("first");
         setInputs((prev) => [
           ...prev,
           {
@@ -75,7 +82,10 @@ const FindAndInputField = ({ label, props }: Props) => {
         ]);
         entry.value = "";
       } else {
-        const existingInput = dataList.find((x) => x.name === entry.value);
+        const existingInput = dataList.find(
+          (x) => x.name.toLowerCase() == entry.value.trim().toLowerCase(),
+        );
+        console.log("existing", existingInput);
         if (existingInput) {
           setInputs((prev) => [
             ...prev,
@@ -204,7 +214,7 @@ const FindAndInputField = ({ label, props }: Props) => {
       {isMenuOpen && (
         <div
           className={cn(
-            "hidden absolute top-14 z-50 left-4 w-full rounded-md overflow-y-scroll max-h-[200px] **:hover:bg-neutral-700 **:border-b **:border-b-neutral-500 **:cursor-pointer bg-neutral-800 px-2 border border-neutral-500 drop-shadow-xl drop-shadow-black **:px-4 **:py-2  flex-col",
+            "hidden absolute top-28 z-50 left-4 w-full rounded-md overflow-y-scroll max-h-[200px] **:hover:bg-neutral-700 **:border-b **:border-b-neutral-500 **:cursor-pointer bg-neutral-800 px-2 border border-neutral-500 drop-shadow-xl drop-shadow-black **:px-4 **:py-2  flex-col",
             isMenuOpen && "flex",
           )}
           ref={menuRef}

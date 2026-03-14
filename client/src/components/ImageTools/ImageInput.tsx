@@ -8,10 +8,11 @@ type Props = {
   label: string;
   maxFiles?: number;
   setList: Dispatch<SetStateAction<Images[]>>;
+  setName: Dispatch<SetStateAction<string>>;
   props?: React.ComponentProps<"input">;
 };
 
-const ImageInput = ({ label, maxFiles, setList, props }: Props) => {
+const ImageInput = ({ label, maxFiles, setList, setName, props }: Props) => {
   const [myFiles, setMyFiles] = useState<File[]>([]);
 
   const onDrop = useCallback(
@@ -25,8 +26,10 @@ const ImageInput = ({ label, maxFiles, setList, props }: Props) => {
           myFiles.push(file);
         }
       });
+
+      setName(myFiles[0].name);
     },
-    [maxFiles, myFiles],
+    [maxFiles, myFiles, setName],
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -79,6 +82,8 @@ const ImageInput = ({ label, maxFiles, setList, props }: Props) => {
           {isDragActive ? <p>Drop Images.</p> : <p>Drop Images Or Click.</p>}
         </div>
       </div>
+
+      <div className="w-full"> </div>
     </>
   );
 };

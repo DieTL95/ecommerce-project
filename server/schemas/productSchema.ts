@@ -3,11 +3,11 @@ import z from "zod";
 const mimeTypes = ["image/png", "image/jpeg", "image/jpg"];
 export const productSchema = z.object({
   body: z.object({
-    name: z.string().min(5, "Enter a valid product name.").max(50, "Too much"),
+    name: z.string().min(5, "Enter a valid product name.").max(200, "Too much"),
     description: z
       .string()
       .min(5, "To change it later")
-      .max(500, "Too much pal"),
+      .max(1000, "Too much pal"),
     price: z.preprocess(
       (val) => Number(val),
       z

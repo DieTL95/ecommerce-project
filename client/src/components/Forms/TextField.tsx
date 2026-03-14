@@ -17,7 +17,7 @@ const TextField = ({ label, props }: Props) => {
         placeholder=" "
         className={cn(
           "peer border border-black px-4 py-3.5 w-full max-h-[48px]",
-          field.state.meta.errors.length > 0 && "border-red-600"
+          field.state.meta.errors.length > 0 && "border-red-600",
         )}
         onChange={(e) => field.handleChange(e.target.value)}
         {...props}

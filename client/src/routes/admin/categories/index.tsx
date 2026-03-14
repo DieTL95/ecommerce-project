@@ -1,11 +1,19 @@
+import Pagination from "@/components/UI/Pagination";
+import { productSearchSchema } from "@/schemas/productSchema";
 import { fetchCategories } from "@/zactions/catgeoriesActions";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/admin/categories/")({
   component: RouteComponent,
-  loader: async () => {
-    const data = await fetchCategories();
+  validateSearch: productSearchSchema,
+
+  loaderDeps: ({ search }) => ({ q: search.q, page: search.page }),
+  loader: async ({ deps }) => {
+    const data = await fetchCategories(deps);
     if (!data) {
+      throw notFound();
+    }
+    if (deps.page && deps.page > data.pages) {
       throw notFound();
     }
     return data;
@@ -22,10 +30,11 @@ export const Route = createFileRoute("/admin/categories/")({
 });
 function RouteComponent() {
   const data = Route.useLoaderData();
+  const { page } = Route.useSearch();
 
   return (
     <div className="flex flex-col gap-2 w-full">
-      {data.map((catg) => (
+      {data.results.map((catg) => (
         <Link
           to="/admin/categories/$id"
           params={{ id: catg.id }}
@@ -44,6 +53,7 @@ function RouteComponent() {
           </div>
         </Link>
       ))}
+      <Pagination pages={data.pages} currentPage={page || 1} />
     </div>
   );
 }

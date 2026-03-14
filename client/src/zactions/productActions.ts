@@ -5,7 +5,6 @@ import { z } from "zod";
 export const fetchProducts = async (queries: {
   [key: string]: unknown | undefined;
 }) => {
-  console.log(queries);
   const urlQuery = new URLSearchParams();
   for (const [key, val] of Object.entries(queries)) {
     if (val) {
@@ -53,7 +52,7 @@ export const fetchOneProduct = async (id: string) => {
 };
 
 export const addProduct = async (data: z.infer<typeof productSchema>) => {
-  console.log("FormData Action: ", data);
+  console.log("Product: ", data);
   try {
     const res = await fetch("http://localhost:5100/api/products", {
       method: "POST",

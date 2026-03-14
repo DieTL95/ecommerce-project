@@ -14,43 +14,54 @@ export const getAllProducts = async (req: Request, res: Response) => {
 
   const results = await getPages(
     prods,
-    (Number(req.query.page) - 1) * 10 || 0,
-    Number(req.query.limit) || 10,
+    (Number(req.query.page) - 1) * 12 || 0,
+    Number(req.query.limit) || 12,
   );
   return res.status(200).json(results);
 };
 
 export const createProduct = async (req: Request, res: Response) => {
-  const prod = await db
-    .insertInto("products")
-    .values({
-      name: req.body.name,
-      description: req.body.description,
-      price: req.body.price,
-    })
-    .returningAll()
-    .executeTakeFirstOrThrow();
+  const prod = await db.transaction().execute(async (trx) => {
+    const insertedProd = await trx
+      .insertInto("products")
+      .values({
+        name: req.body.name,
+        description: req.body.description,
+        price: req.body.price,
+        images:
+          req.body.images.length > 0 ? sqlJSON(req.body.images) : sqlJSON([]),
+      })
+      .returningAll()
+      .executeTakeFirstOrThrow();
 
-  if (req.body.categories) {
-    req.body.categories.forEach(async (catg: { id: string; name: string }) => {
-      if (!catg.id) {
-        const newCategory = await db
-          .insertInto("categories")
-          .values({ name: catg.name, description: catg.name })
-          .returningAll()
-          .executeTakeFirstOrThrow();
-        await db
-          .insertInto("product_category")
-          .values({ product_id: prod.id, category_id: newCategory.id })
-          .execute();
-      } else {
-        await db
-          .insertInto("product_category")
-          .values({ product_id: prod.id, category_id: catg.id })
-          .execute();
-      }
-    });
-  }
+    if (req.body.categories) {
+      req.body.categories.forEach(
+        async (catg: { id?: string | null; name: string }) => {
+          if (!catg.id) {
+            const newCategory = await trx
+              .insertInto("categories")
+              .values({ name: catg.name, description: catg.name })
+              .returningAll()
+              .executeTakeFirstOrThrow();
+            await trx
+              .insertInto("product_category")
+              .values({
+                product_id: insertedProd.id,
+                category_id: newCategory.id,
+              })
+              .execute();
+          } else {
+            await trx
+              .insertInto("product_category")
+              .values({ product_id: insertedProd.id, category_id: catg.id })
+              .execute();
+          }
+        },
+      );
+    }
+
+    return insertedProd;
+  });
 
   return res.status(201).json(prod);
 };
@@ -134,7 +145,7 @@ export const updateProduct = async (req: Request, res: Response) => {
           .execute(),
     );
 
-    req.body.categories.forEach(async (catg: { id: string; name: string }) => {
+    req.body.categories.forEach(async (catg: { id?: string; name: string }) => {
       if (!catg.id) {
         const newCategory = await db
           .insertInto("categories")

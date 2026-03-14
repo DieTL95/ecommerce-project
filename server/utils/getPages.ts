@@ -27,7 +27,7 @@ export async function getPages<O>(
   return {
     results: res,
     total: total.count,
-    pages: Math.round(total.count / 10),
+    pages: Math.ceil(total.count / 12),
   };
 }
 

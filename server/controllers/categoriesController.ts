@@ -2,17 +2,22 @@ import { db } from "../database.ts";
 import type { Request, Response } from "express";
 import { sqlJSON } from "../utils/utils.ts";
 import { jsonArrayFrom } from "kysely/helpers/postgres";
+import getPages from "../utils/getPages.ts";
 
 export const getAllCategories = async (req: Request, res: Response) => {
-  const catgs = await db
+  const catgs = db
     .selectFrom("categories")
-    .$if(!!req.query, (eb) => eb.where("name", "ilike", `${req.query.q}%`))
-    .offset(Number(req.query.offSet) || 0)
-    .fetch(Number(req.query.limit) || 10)
-    .selectAll()
-    .execute();
+    .$if(!!req.query.q, (eb) => eb.where("name", "ilike", `${req.query.q}%`))
 
-  return res.json(catgs);
+    .selectAll();
+
+  const results = await getPages(
+    catgs,
+    (Number(req.query.page) - 1) * 10 || 0,
+    Number(req.query.limit) || 10,
+  );
+
+  return res.status(200).json(results);
 };
 
 export const getOneCategory = async (req: Request, res: Response) => {

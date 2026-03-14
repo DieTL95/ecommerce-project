@@ -1,11 +1,19 @@
 import type { categorySchema } from "@/schemas/categorySchema";
-import type { Categories, Images } from "@/utils/types";
+import type { Categories, CountedResults, Images } from "@/utils/types";
 import { z } from "zod";
 
-export const fetchCategories = async (query?: string | undefined) => {
+export const fetchCategories = async (queries: {
+  [key: string]: unknown | undefined;
+}) => {
+  const urlQuery = new URLSearchParams();
+  for (const [key, val] of Object.entries(queries)) {
+    if (val) {
+      urlQuery.append(key, val.toString());
+    }
+  }
   try {
     const res = await fetch(
-      `http://localhost:5100/api/categories/?q=${query ? query : ""}`,
+      `http://localhost:5100/api/categories?${urlQuery}`,
       {
         method: "GET",
         credentials: "include",
@@ -19,7 +27,7 @@ export const fetchCategories = async (query?: string | undefined) => {
     if (!res.ok) {
       throw new Error("Error");
     }
-    const data: Categories[] = await res.json();
+    const data: CountedResults<Categories> = await res.json();
     console.log(data);
     return data;
   } catch (error) {
@@ -70,7 +78,8 @@ export const createCategoryAction = async (
   }
 };
 
-export const updateCategoryAction = async (id: string, data) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const updateCategoryAction = async (id: string, data: any) => {
   try {
     const res = await fetch(`http://localhost:5100/api/categories/${id}`, {
       method: "PATCH",
