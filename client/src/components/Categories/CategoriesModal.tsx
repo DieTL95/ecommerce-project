@@ -22,9 +22,9 @@ const CategoriesModal = ({
 
   useEffect(() => {
     const getCategories = async () => {
-      const data = await fetchCategories(query?.trim());
+      const data = await fetchCategories({ q: query?.trim() });
       if (data) {
-        setCategories(data);
+        setCategories(data.results);
       }
     };
 
@@ -38,7 +38,7 @@ const CategoriesModal = ({
     <div className="flex flex-col justify-center items-center w-1/3 gap-2 h-fit p-2 rounded-xl bg-neutral-900">
       <div className="w-full">
         <TextInput
-          label="Search Products"
+          label="Search Categories"
           props={{ onChange: debounce(handleSearch) }}
         />
       </div>

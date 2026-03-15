@@ -4,6 +4,7 @@ import ProductSelectField from "@/components/Forms/ProductSelectField";
 import { SubmitButton } from "@/components/Forms/SubmitButton";
 import TextField from "@/components/Forms/TextField";
 import { fieldContext, formContext } from "@/context/form-context";
+import { frontpageSchema } from "@/schemas/frontpageSchema";
 import { addFrontpage } from "@/zactions/frontpageActions";
 
 import { createFormHook } from "@tanstack/react-form";

@@ -4,7 +4,7 @@ import { productSchema } from "./productSchema";
 
 export const frontpageSchema = z.object({
   name: z.string("Cant be mepty"),
-  productSchema,
-  categorySchema,
+  categories: categorySchema.optional(),
+  products: productSchema.optional(),
   current: z.boolean(),
 });
