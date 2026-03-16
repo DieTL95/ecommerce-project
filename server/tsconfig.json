@@ -10,6 +10,7 @@
              "verbatimModuleSyntax": true,
      "allowSyntheticDefaultImports": true,
     "noEmit": true,
+            "typeRoots": ["./types"],
 },
 "include": ["**/*"],
 "exclude": ["node_modules"],
