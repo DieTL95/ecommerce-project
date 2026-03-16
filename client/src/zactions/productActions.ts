@@ -13,13 +13,16 @@ export const fetchProducts = async (queries: {
   }
 
   try {
-    const res = await fetch(`http://localhost:5100/api/products?${urlQuery}`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Access-Control-Allow-Origin": "*",
+    const res = await fetch(
+      `${import.meta.env.VITE_DOMAIN_URL}/api/products?${urlQuery}`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
       },
-    });
+    );
     if (!res.ok) {
       throw new Error(res.statusText);
     }
@@ -33,13 +36,16 @@ export const fetchProducts = async (queries: {
 
 export const fetchOneProduct = async (id: string) => {
   try {
-    const res = await fetch(`http://localhost:5100/api/products/${id}`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Access-Control-Allow-Origin": "*",
+    const res = await fetch(
+      `${import.meta.env.VITE_DOMAIN_URL}/api/products/${id}`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
       },
-    });
+    );
     if (!res.ok) {
       throw new Error(res.statusText);
     }
@@ -54,7 +60,7 @@ export const fetchOneProduct = async (id: string) => {
 export const addProduct = async (data: z.infer<typeof productSchema>) => {
   console.log("Product: ", data);
   try {
-    const res = await fetch("http://localhost:5100/api/products", {
+    const res = await fetch(`${import.meta.env.VITE_DOMAIN_URL}/api/products`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -80,15 +86,18 @@ export const updateProductAction = async (
   data: z.infer<typeof productSchema>,
 ) => {
   try {
-    const res = await fetch(`http://localhost:5100/api/products/${id}`, {
-      method: "PATCH",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
+    const res = await fetch(
+      `${import.meta.env.VITE_DOMAIN_URL}/api/products/${id}`,
+      {
+        method: "PATCH",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify(data),
       },
-      body: JSON.stringify(data),
-    });
+    );
     console.log(res);
     if (res.ok) {
       const prod = await res.json();
@@ -103,15 +112,18 @@ export const updateProductAction = async (
 export const updateProdImagesAction = async (id: string, images: Images[]) => {
   console.log(images);
   try {
-    const res = await fetch(`http://localhost:5100/api/products/${id}/images`, {
-      method: "PATCH",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
+    const res = await fetch(
+      `${import.meta.env.VITE_DOMAIN_URL}/api/products/${id}/images`,
+      {
+        method: "PATCH",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify(images),
       },
-      body: JSON.stringify(images),
-    });
+    );
     console.log(res);
     if (res.ok) {
       return { error: false, message: "Images updated." };

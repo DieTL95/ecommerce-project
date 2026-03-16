@@ -85,7 +85,7 @@ function RouteComponent() {
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
-    fetch("http://localhost:5100/api/checkout/payment-intent", {
+    fetch(`${import.meta.env.VITE_DOMAIN_URL}/api/checkout/payment-intent`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ amount: val }),

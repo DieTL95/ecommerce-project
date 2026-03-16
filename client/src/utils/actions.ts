@@ -4,7 +4,7 @@ import type { Cart, Products } from "./types";
 
 export const isAuthAction = async () => {
   try {
-    await fetch("http://localhost:5100/api/auth/is-auth", {
+    await fetch(`${import.meta.env.VITE_DOMAIN_URL}/api/auth/is-auth`, {
       method: "GET",
       headers: {
         "Access-Control-Allow-Origin": "*",
@@ -29,16 +29,19 @@ export const registerUserAction = async (
   try {
     const data = registerationSchema.parse(userData);
 
-    const res = await fetch("http://localhost:5100/api/auth/register", {
-      method: "POST",
-      credentials: "include",
+    const res = await fetch(
+      `${import.meta.env.VITE_DOMAIN_URL}/api/auth/register`,
+      {
+        method: "POST",
+        credentials: "include",
 
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify(data),
       },
-      body: JSON.stringify(data),
-    });
+    );
     console.log(res);
     if (res.ok) {
       const data = await res.json();
@@ -59,15 +62,18 @@ export const loginUserAction = async (
   try {
     const data = loginSchema.parse(userData);
 
-    const res = await fetch("http://localhost:5100/api/auth/login", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
+    const res = await fetch(
+      `${import.meta.env.VITE_DOMAIN_URL}/api/auth/login`,
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify(data),
       },
-      body: JSON.stringify(data),
-    });
+    );
     console.log(res);
     if (res.ok) {
       return "login succesful";
@@ -80,13 +86,16 @@ export const loginUserAction = async (
 
 export const fetchOneProduct = async (id: string) => {
   try {
-    const res = await fetch(`http://localhost:5100/api/products/${id}`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Access-Control-Allow-Origin": "*",
+    const res = await fetch(
+      `${import.meta.env.VITE_DOMAIN_URL}/api/products/${id}`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
       },
-    });
+    );
     if (!res.ok) {
       throw new Error(res.statusText);
     }
@@ -100,7 +109,7 @@ export const fetchOneProduct = async (id: string) => {
 
 export const addProduct = async (data: Products) => {
   try {
-    const res = await fetch("http://localhost:5100/api/products", {
+    const res = await fetch(`${import.meta.env.VITE_DOMAIN_URL}/api/products`, {
       method: "POST",
 
       body: JSON.stringify(data),
@@ -119,7 +128,7 @@ export const addProduct = async (data: Products) => {
 
 export const createCartAction = async () => {
   try {
-    const res = await fetch(`http://localhost:5100/api/cart `, {
+    const res = await fetch(`${import.meta.env.VITE_DOMAIN_URL}/api/cart `, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -139,7 +148,7 @@ export const createCartAction = async () => {
 };
 
 export const handleCartAction = async () => {
-  const res = await fetch("http://localhost:5100/api/cart", {
+  const res = await fetch(`${import.meta.env.VITE_DOMAIN_URL}/api/cart`, {
     method: "GET",
     credentials: "include",
     headers: {
@@ -155,7 +164,7 @@ export const handleCartAction = async () => {
 };
 
 export const fetchCartByIdAction = async (id: string) => {
-  const res = await fetch(`http://localhost:5100/api/cart/${id}`, {
+  const res = await fetch(`${import.meta.env.VITE_DOMAIN_URL}/api/cart/${id}`, {
     method: "GET",
     credentials: "include",
     headers: {
@@ -184,14 +193,17 @@ export const addToCartAction = async (
       quantity,
     });
 
-    const res = await fetch(`http://localhost:5100/api/cart/${cart_id}`, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
+    const res = await fetch(
+      `${import.meta.env.VITE_DOMAIN_URL}/api/cart/${cart_id}`,
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body,
       },
-      body,
-    });
+    );
     console.log("Add Res: ", res);
     if (res.ok) {
       const data = await res.json();
@@ -220,7 +232,7 @@ export const updateCartAction = async ({
       quantity,
     });
 
-    const res = await fetch(`http://localhost:5100/api/cart`, {
+    const res = await fetch(`${import.meta.env.VITE_DOMAIN_URL}/api/cart`, {
       method: "PATCH",
       credentials: "include",
       headers: {
@@ -242,7 +254,7 @@ export const updateCartAction = async ({
 
 export const deleteCartItem = async (id: string) => {
   try {
-    const res = await fetch(`http://localhost:5100/api/cart/${id}`, {
+    const res = await fetch(` /api/cart/${id}`, {
       method: "DELETE",
       credentials: "include",
       headers: {
@@ -260,7 +272,7 @@ export const deleteCartItem = async (id: string) => {
 
 export const clearCartAction = async () => {
   try {
-    const res = await fetch(`http://localhost:5100/api/cart`, {
+    const res = await fetch(` /api/cart`, {
       method: "DELETE",
       credentials: "include",
       headers: {
@@ -299,7 +311,7 @@ export const createOrderAction = async ({
       order_items,
     });
 
-    const res = await fetch(`http://localhost:5100/api/orders`, {
+    const res = await fetch(` /api/orders`, {
       method: "POST",
       credentials: "include",
       headers: {

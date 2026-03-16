@@ -18,7 +18,7 @@ export const fetchCategories = async (queries: {
   }
   try {
     const res = await fetch(
-      `http://localhost:5100/api/categories?${urlQuery}`,
+      `${import.meta.env.VITE_DOMAIN_URL}/api/categories?${urlQuery}`,
       {
         method: "GET",
         credentials: "include",
@@ -42,13 +42,16 @@ export const fetchCategories = async (queries: {
 
 export const fetchOneCategory = async (id: string) => {
   try {
-    const res = await fetch(`http://localhost:5100/api/categories/${id}`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Access-Control-Allow-Origin": "*",
+    const res = await fetch(
+      `${import.meta.env.VITE_DOMAIN_URL}/api/categories/${id}`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
       },
-    });
+    );
     if (!res.ok) {
       throw new Error(res.statusText);
     }
@@ -76,7 +79,7 @@ export const fetchOneCategoryProducts = async ({
       }
     }
     const res = await fetch(
-      `http://localhost:5100/api/categories/${id}/products?${urlQuery}`,
+      `${import.meta.env.VITE_DOMAIN_URL}/api/categories/${id}/products?${urlQuery}`,
       {
         method: "GET",
         credentials: "include",
@@ -100,15 +103,18 @@ export const createCategoryAction = async (
   data: z.infer<typeof categorySchema>,
 ) => {
   try {
-    const res = await fetch(`http://localhost:5100/api/categories`, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
+    const res = await fetch(
+      `${import.meta.env.VITE_DOMAIN_URL}/api/categories`,
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify(data),
       },
-      body: JSON.stringify(data),
-    });
+    );
     console.log(res);
     if (res.ok) {
       return { error: false, message: "Category created." };
@@ -122,15 +128,18 @@ export const createCategoryAction = async (
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const updateCategoryAction = async (id: string, data: any) => {
   try {
-    const res = await fetch(`http://localhost:5100/api/categories/${id}`, {
-      method: "PATCH",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
+    const res = await fetch(
+      `${import.meta.env.VITE_DOMAIN_URL}/api/categories/${id}`,
+      {
+        method: "PATCH",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify(data),
       },
-      body: JSON.stringify(data),
-    });
+    );
     console.log(res);
     if (res.ok) {
       const prod = await res.json();
@@ -148,7 +157,7 @@ export const updateCategoryAction = async (id: string, data: any) => {
 export const updateCatgImagesAction = async (id: string, images: Images[]) => {
   try {
     const res = await fetch(
-      `http://localhost:5100/api/categories/${id}/images`,
+      `${import.meta.env.VITE_DOMAIN_URL}/api/categories/${id}/images`,
       {
         method: "PATCH",
         credentials: "include",
@@ -171,13 +180,16 @@ export const updateCatgImagesAction = async (id: string, images: Images[]) => {
 
 export const deleteCategoryAction = async (id: string) => {
   try {
-    const res = await fetch(`http://localhost:5100/api/categories/${id}`, {
-      method: "DELETE",
-      credentials: "include",
-      headers: {
-        "Access-Control-Allow-Origin": "*",
+    const res = await fetch(
+      `${import.meta.env.VITE_DOMAIN_URL}/api/categories/${id}`,
+      {
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
       },
-    });
+    );
     console.log(res);
     if (res.ok) {
       const response = await res.json();
