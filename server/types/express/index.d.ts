@@ -10,3 +10,9 @@ declare namespace Express {
     user?: User | undefined;
   }
 }
+
+declare namespace session {
+  export interface SessionData {
+    cart_id?: string;
+  }
+}
