@@ -44,7 +44,6 @@ function RouteComponent() {
   const category = Route.useLoaderData();
   const [list, setList] = useState(category.images || []);
   const form = useAppForm({
-    defaultValues: { ...category },
     // validators: {
     //   onChange: categorySchema,
     // },
@@ -67,7 +66,7 @@ function RouteComponent() {
     }
     return toast.success(res.message);
   };
-  console.log(form.state.value);
+
   return (
     <form
       onSubmit={(e) => {
@@ -96,6 +95,7 @@ function RouteComponent() {
           label="Images"
           maxFiles={list ? 5 - list.length : 5}
           setList={setList}
+          setName={() => {}}
         />
         <button
           type="button"

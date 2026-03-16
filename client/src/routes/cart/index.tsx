@@ -50,11 +50,13 @@ function RouteComponent() {
                 to="/products/$product"
                 params={{ product: item.product.id }}
               >
-                <img
-                  src={item.product.images[0].secure_url}
-                  alt={item.product.name}
-                  className="max-h-52"
-                />
+                {item.product.images && item.product.images.length > 0 && (
+                  <img
+                    src={item.product.images[0].secure_url}
+                    alt={item.product.name}
+                    className="max-h-52"
+                  />
+                )}
 
                 <div>{item.product.name}</div>
               </Link>
@@ -73,7 +75,7 @@ function RouteComponent() {
               dollarsPrice(
                 cart.cart_items
                   .map((item) => item.total_price)
-                  .reduce((a, b) => a && b && a + b)!
+                  .reduce((a, b) => a && b && a + b)!,
               )}
           </div>
           <div>

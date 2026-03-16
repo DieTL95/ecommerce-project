@@ -94,6 +94,7 @@ function RouteComponent() {
           label="Images"
           maxFiles={list ? 5 - list.length : 5}
           setList={setList}
+          setName={() => {}}
         />
         <button
           type="button"
