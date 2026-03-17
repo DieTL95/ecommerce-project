@@ -5,7 +5,7 @@
   "main": "server.ts",
   "scripts": {
     "type-check": "tsc -p tsconfig.json --noEmit",
-    "build": "npm run",
+       "compile": "tsc skipLibCheck  ",
     "setup-project": "npm i && cd client && npm i",
     "dev": "concurrently \"npm run server\"  \"npm run client\"",
     "server": "nodets server",
