@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "build":   "npm run",
+    "type-check": "tsc -p tsconfig.json --noEmit",
+    "build": "npm run",
     "setup-project": "npm i && cd client && npm i",
     "dev": "concurrently \"npm run server\"  \"npm run client\"",
     "server": "nodets server",
@@ -62,6 +63,7 @@
     "reflect-metadata": "^0.2.2",
     "serverless-http": "^4.0.0",
     "stripe": "^20.3.1",
+    "ts-node": "^10.9.2",
     "uuid": "^13.0.0",
     "ws": "^8.18.3",
     "zod": "^4.2.1"

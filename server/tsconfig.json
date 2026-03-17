@@ -1,5 +1,6 @@
 {
 "compilerOptions": {
+        "lib": ["ESNext"],
  "module": "nodenext",
     "moduleResolution": "nodenext",
     "target": "es2024",
@@ -8,10 +9,11 @@
      "allowImportingTsExtensions": true,
              "verbatimModuleSyntax": true,
      "allowSyntheticDefaultImports": true,
-    "noEmit": true,
-            "typeRoots": ["./types"],
+    "noEmit": true, "esModuleInterop": true,
+            "typeRoots": ["./types"], "incremental": true,
+    "noUncheckedIndexedAccess": true,    "forceConsistentCasingInFileNames": true,
 },
 "include": ["**/*"],
-"exclude": ["node_modules"],
+  "exclude": ["dist", "node_modules"],
 
 }
