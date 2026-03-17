@@ -4,10 +4,10 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "build":   "netlify-lambda build express",
+    "build":   "npm run",
     "setup-project": "npm i && cd client && npm i",
     "dev": "concurrently \"npm run server\"  \"npm run client\"",
-    "server": "nodemon server",
+    "server": "nodets server",
     "client": "npm run dev --prefix ../client/"
   },
   "keywords": [],
