@@ -4,6 +4,8 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
+      "build": "npm run tsc && npm run copy-views",  "start": "node ./dist/server.js",
+    "tsc": "tsc",
     "setup-project": "npm i && cd client && npm i",
     "dev": "concurrently \"npm run server\"  \"npm run client\"",
     "server": "nodemon server",
