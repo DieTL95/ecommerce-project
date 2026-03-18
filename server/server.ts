@@ -57,7 +57,9 @@ app.use(
       httpOnly: true,
       secure: isProduction ? true : false,
       maxAge: 30 * 24 * 60 * 60 * 1000,
-      domain: isProduction ? process.env.PUBLIC_DOMAIN : process.env.DEV_DOMAIN,
+      domain: isProduction
+        ? (process.env.PUBLIC_DOMAIN as string)
+        : process.env.DEV_DOMAIN,
     },
     store: new pgStore({
       pool: new Pool({

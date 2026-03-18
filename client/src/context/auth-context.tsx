@@ -17,7 +17,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
         },
       },
     );
