@@ -35,6 +35,7 @@ const corsOrigin =
   process.env.NODE_ENV === "production"
     ? process.env.PUBLIC_DOMAIN
     : process.env.DEV_DOMAIN;
+const isProduction = process.env.NODE_ENV === "production";
 app.use(
   cors({
     origin: corsOrigin,
@@ -52,9 +53,11 @@ app.use(
     saveUninitialized: true,
 
     cookie: {
-      sameSite: "lax",
-      secure: false,
+      sameSite: isProduction ? "none" : "lax",
+      httpOnly: true,
+      secure: isProduction ? true : false,
       maxAge: 30 * 24 * 60 * 60 * 1000,
+      domain: isProduction ? process.env.PUBLIC_DOMAIN : process.env.DEV_DOMAIN,
     },
     store: new pgStore({
       pool: new Pool({
