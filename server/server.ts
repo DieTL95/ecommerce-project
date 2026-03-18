@@ -30,6 +30,7 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_PUBLIC,
   api_secret: process.env.CLOUDINARY_SECRET,
 });
+app.set("trust proxy", 1);
 
 const corsOrigin =
   process.env.NODE_ENV === "production"
@@ -45,7 +46,6 @@ app.use(
   }),
 );
 app.use(express.json());
-app.set("trust proxy", 1);
 app.use(
   session({
     secret: process.env.SESSION_SECRET as string,
@@ -53,11 +53,11 @@ app.use(
     saveUninitialized: true,
 
     cookie: {
-      sameSite: isProduction ? "none" : "lax",
+      sameSite: "none",
       httpOnly: true,
-      secure: isProduction ? true : false,
+      secure: true,
       maxAge: 30 * 24 * 60 * 60 * 1000,
-      domain: "ecommerce-project-lemon-omega-67.vercel.app",
+      domain: ".vercel.app",
     },
     store: new pgStore({
       pool: new Pool({
