@@ -4,11 +4,13 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "start":     "npm run server",
+
     "type-check": "tsc -p tsconfig.json --noEmit",
        "compile": "npx tsc server.ts --skipLibCheck  ",
     "setup-project": "npm i && cd client && npm i",
-    "dev": "concurrently \"npm run server\"  \"npm run client\"",
-    "server": "nodets server.js",
+    "dev": "npm run server",
+    "server": "nodemon server.js",
     "client": "npm run dev --prefix ../client/"
   },
   "keywords": [],
