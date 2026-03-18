@@ -2,12 +2,12 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "server.ts",
   "scripts": {
     "build": "tsc --noEmit false",
     "setup-project": "npm i && cd client && npm i",
     "dev": "concurrently \"npm run server\"  \"npm run client\"",
-    "server": "nodemon server.js",
+    "server": "nodemon server.ts",
     "client": "npm run dev --prefix ../client/"
   },
   "keywords": [],
