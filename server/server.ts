@@ -33,6 +33,7 @@ cloudinary.config({
 app.use(
   cors({
     origin: process.env.PUBLIC_DOMAIN,
+
     credentials: true,
     methods: ["GET", "POST", "PATCH", "DELETE"],
   }),
