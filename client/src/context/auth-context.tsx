@@ -17,8 +17,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin":
-            "https://ecommerce-project-lemon-omega-67.vercel.app",
+          "Access-Control-Allow-Origin": "*",
         },
       },
     );
