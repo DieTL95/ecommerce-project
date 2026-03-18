@@ -48,7 +48,6 @@ web_modules/
 
 # TypeScript cache
 *.tsbuildinfo
-*.ts
 # Optional npm cache directory
 .npm
 
@@ -142,7 +141,6 @@ dist
 .DS_*
 **/*.backup.*
 **/*.back.*
-**/*.ts
 node_modules
 
 *.sublime*
