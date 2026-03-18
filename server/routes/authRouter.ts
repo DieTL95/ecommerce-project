@@ -22,6 +22,7 @@ router.route("/login").post(
     failureMessage: "Failed",
     failWithError: true,
     keepSessionInfo: true,
+    successMessage: "Logged in"
   }),
 );
 

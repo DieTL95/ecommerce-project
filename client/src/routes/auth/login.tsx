@@ -29,8 +29,8 @@ function RouteComponent() {
 
   const form = useAppForm({
     defaultValues: {
-      email: "teja@mail.com",
-      password: "HzoYT^br9rk7h6",
+      email: "",
+      password: "",
     },
     validators: {
       onChange: loginSchema,

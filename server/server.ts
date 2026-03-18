@@ -30,15 +30,21 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_PUBLIC,
   api_secret: process.env.CLOUDINARY_SECRET,
 });
+
+const corsOrigin =
+  process.env.NODE_ENV === "production"
+    ? process.env.PUBLIC_DOMAIN
+    : process.env.DEV_DOMAIN;
 app.use(
   cors({
-    origin: process.env.PUBLIC_DOMAIN,
+    origin: corsOrigin,
 
     credentials: true,
     methods: ["GET", "POST", "PATCH", "DELETE"],
   }),
 );
 app.use(express.json());
+app.set("trust proxy", 1);
 app.use(
   session({
     secret: process.env.SESSION_SECRET as string,
