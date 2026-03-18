@@ -57,9 +57,7 @@ app.use(
       httpOnly: true,
       secure: isProduction ? true : false,
       maxAge: 30 * 24 * 60 * 60 * 1000,
-      domain: isProduction
-        ? (process.env.PUBLIC_DOMAIN as string)
-        : process.env.DEV_DOMAIN,
+      domain: "https://ecommerce-project-lemon-omega-67.vercel.app",
     },
     store: new pgStore({
       pool: new Pool({
