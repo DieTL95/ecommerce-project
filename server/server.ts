@@ -30,7 +30,6 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_PUBLIC,
   api_secret: process.env.CLOUDINARY_SECRET,
 });
-app.set("trust proxy", 1);
 
 const corsOrigin =
   process.env.NODE_ENV === "production"
@@ -50,9 +49,10 @@ app.use(
   session({
     secret: process.env.SESSION_SECRET as string,
     resave: false,
+    saveUninitialized: true,
 
     cookie: {
-      sameSite: "none",
+      sameSite: false,
       httpOnly: true,
       secure: true,
       maxAge: 30 * 24 * 60 * 60 * 1000,
