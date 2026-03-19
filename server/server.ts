@@ -52,11 +52,11 @@ app.use(
     saveUninitialized: true,
 
     cookie: {
-      sameSite: false,
+      sameSite: "none",
+      path: "/",
       httpOnly: true,
       secure: true,
       maxAge: 30 * 24 * 60 * 60 * 1000,
-      domain: ".vercel.app",
     },
     store: new pgStore({
       pool: new Pool({

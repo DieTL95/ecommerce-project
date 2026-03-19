@@ -42,10 +42,13 @@ export const strategy = new Strategy(
 );
 
 passport.serializeUser((user, done) => {
+  console.log("Seralise");
   done(null, user.id);
 });
 
 passport.deserializeUser(async (userId: string, done) => {
+  console.log("deseralise");
+
   try {
     const user = await db
       .selectFrom("users")
