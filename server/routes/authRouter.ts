@@ -19,11 +19,14 @@ router.route("/register").post(validateData(userSchema), createUser);
 
 router.route("/login").post(
   passport.authenticate("local", {
+    successMessage: "Logged in",
     failureMessage: "Failed",
     failWithError: true,
     keepSessionInfo: true,
-    successMessage: "Logged in"
   }),
+  (req: Request, res: Response) => {
+    return res.status(200).json({ message: "logged in." });
+  },
 );
 
 router

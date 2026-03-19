@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useState } from "react";
 import type { AuthType, Users } from "../utils/types";
 import toast from "react-hot-toast";
 import { apiDomain } from "@/utils/utils";
+import { redirect } from "@tanstack/react-router";
 
 const authContext = createContext<AuthType | undefined>(undefined);
 
@@ -50,9 +51,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const data = await res.json();
       toast(data.message);
       console.log(data);
+
       setUser(null);
       setIsAuthenticated(false);
       setIsLoading(false);
+      redirect({ to: ".", throw: true, replace: true, reloadDocument: true });
     } else {
       console.log(res);
 

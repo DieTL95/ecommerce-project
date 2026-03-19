@@ -14,7 +14,7 @@ export type AuthType = {
   getUser: () => Promise<void>;
   isAuthenticated: boolean;
   user: Users | null;
-  logout: () => Promise<void>;
+  logout: () => Promise<void | string>;
   isLoading: boolean;
 };
 

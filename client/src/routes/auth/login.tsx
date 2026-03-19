@@ -6,8 +6,8 @@ import { loginSchema } from "@/schemas/userSchema";
 import { loginUserAction } from "@/utils/actions";
 import z from "zod";
 import MainWrapper from "@/components/UI/MainWrapper";
-import { SubmitButton } from "@/components/Forms/SubmitButton";
 import toast from "react-hot-toast";
+import { cn } from "@sglara/cn";
 export const Route = createFileRoute("/auth/login")({
   component: RouteComponent,
   beforeLoad: ({ context }) => {
@@ -25,7 +25,7 @@ const { useAppForm } = createFormHook({
 });
 
 function RouteComponent() {
-  const navigaet = useNavigate();
+  const navigate = useNavigate();
 
   const form = useAppForm({
     defaultValues: {
@@ -39,7 +39,7 @@ function RouteComponent() {
       const res = await loginUserAction(value);
       if (res) {
         toast.success(res as string);
-        navigaet({ to: "/", replace: true });
+        navigate({ to: "/", replace: true, reloadDocument: true });
       } else {
         toast.error("Login failed.");
       }
@@ -74,7 +74,23 @@ function RouteComponent() {
                 )}
               />
 
-              <SubmitButton />
+              <form.Subscribe
+                selector={(state) => {
+                  return [state.isSubmitting];
+                }}
+                children={([isSubmitting]) => (
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className={cn(
+                      "min-w-[400px] rounded-xl bg-black text-md text-white py-2 cursor-pointer flex justify-center items-center hover:bg-black/70",
+                      isSubmitting && "cursor-wait bg-black/70",
+                    )}
+                  >
+                    {isSubmitting ? "Logging in..." : "Login"}
+                  </button>
+                )}
+              />
             </div>
           </form.AppForm>
         </form>

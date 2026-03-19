@@ -52,10 +52,9 @@ app.use(
     saveUninitialized: true,
 
     cookie: {
-      sameSite: "none",
-      path: "/",
+      sameSite: isProduction ? "none" : "lax",
       httpOnly: true,
-      secure: true,
+      secure: isProduction ? true : false,
       maxAge: 30 * 24 * 60 * 60 * 1000,
     },
     store: new pgStore({
