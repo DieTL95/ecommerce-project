@@ -28,3 +28,8 @@ export const truncateTitle = (title: string) => {
   const max = 50;
   return title.length > max ? title.substring(0, max) + "..." : title;
 };
+
+export const apiDomain =
+  import.meta.env.NODE_ENV === "production"
+    ? import.meta.env.VITE_DOMAIN_URL
+    : import.meta.env.DEV_DOMAIN;

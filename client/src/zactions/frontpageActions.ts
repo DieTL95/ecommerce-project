@@ -1,18 +1,16 @@
 import { frontpageSchema } from "@/schemas/frontpageSchema";
 import type { Frontpage } from "@/utils/types";
+import { apiDomain } from "@/utils/utils";
 import { z } from "zod";
 export const fetchAllFrontpages = async () => {
   try {
-    const res = await fetch(
-      `${import.meta.env.VITE_DOMAIN_URL}/api/frontpage`,
-      {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
+    const res = await fetch(`${apiDomain}/api/frontpage`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
       },
-    );
+    });
     if (!res.ok) {
       throw new Error(res.statusText);
     }
@@ -26,16 +24,13 @@ export const fetchAllFrontpages = async () => {
 
 export const fetchCurrentFrontpage = async () => {
   try {
-    const res = await fetch(
-      `${import.meta.env.VITE_DOMAIN_URL}/api/frontpage/current`,
-      {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
+    const res = await fetch(`${apiDomain}/api/frontpage/current`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
       },
-    );
+    });
     if (!res.ok) {
       throw new Error(res.statusText);
     }
@@ -49,16 +44,13 @@ export const fetchCurrentFrontpage = async () => {
 
 export const fetchOneFrontpage = async (id: string) => {
   try {
-    const res = await fetch(
-      `${import.meta.env.VITE_DOMAIN_URL}/api/frontpage/${id}`,
-      {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
+    const res = await fetch(`${apiDomain}/api/frontpage/${id}`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
       },
-    );
+    });
     if (!res.ok) {
       throw new Error(res.statusText);
     }
@@ -73,18 +65,15 @@ export const fetchOneFrontpage = async (id: string) => {
 export const addFrontpage = async (data: z.infer<typeof frontpageSchema>) => {
   console.log(" Action: ", data);
   try {
-    const res = await fetch(
-      `${import.meta.env.VITE_DOMAIN_URL}/api/frontpage`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-
-        body: JSON.stringify(data),
+    const res = await fetch(`${apiDomain}/api/frontpage`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
       },
-    );
+
+      body: JSON.stringify(data),
+    });
     console.log(res);
     if (res.ok) {
       const data: Frontpage = await res.json();
@@ -100,18 +89,15 @@ export const addFrontpage = async (data: z.infer<typeof frontpageSchema>) => {
 export const updateFrontpageAction = async (id: string, data: Frontpage) => {
   try {
     // const parsedData = frontpageSchema.parse(data);
-    const res = await fetch(
-      `${import.meta.env.VITE_DOMAIN_URL}/api/frontpage/${id}`,
-      {
-        method: "PATCH",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-        body: JSON.stringify(data),
+    const res = await fetch(`${apiDomain}/api/frontpage/${id}`, {
+      method: "PATCH",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
       },
-    );
+      body: JSON.stringify(data),
+    });
     console.log(res);
     if (res.ok) {
       const data: Frontpage = await res.json();
@@ -125,17 +111,14 @@ export const updateFrontpageAction = async (id: string, data: Frontpage) => {
 
 export const deleteFrontpageAction = async (id: string) => {
   try {
-    const res = await fetch(
-      `${import.meta.env.VITE_DOMAIN_URL}/api/frontpage/${id}`,
-      {
-        method: "DELETE",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
+    const res = await fetch(`${apiDomain}/api/frontpage/${id}`, {
+      method: "DELETE",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
       },
-    );
+    });
     if (res.ok) {
       const data: { message: string } = await res.json();
       return { error: false, message: data.message };

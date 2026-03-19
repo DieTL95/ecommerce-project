@@ -8,6 +8,8 @@ import { z } from "zod";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "@/components/Forms/CheckoutForm";
+import { apiDomain } from "@/utils/utils";
+
 const checkoutSearchParams = z.object({
   cartId: z.uuidv4(),
   addId: z.uuidv4().optional(),
@@ -85,7 +87,7 @@ function RouteComponent() {
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_DOMAIN_URL}/api/checkout/payment-intent`, {
+    fetch(`${apiDomain}/api/checkout/payment-intent`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ amount: val }),

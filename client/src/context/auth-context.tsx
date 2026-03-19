@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useState } from "react";
 import type { AuthType, Users } from "../utils/types";
 import toast from "react-hot-toast";
+import { apiDomain } from "@/utils/utils";
 
 const authContext = createContext<AuthType | undefined>(undefined);
 
@@ -10,16 +11,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const getUser = useCallback(async () => {
-    const res = await fetch(
-      `${import.meta.env.VITE_DOMAIN_URL}/api/auth/is-auth`,
-      {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
+    const res = await fetch(`${apiDomain}/api/auth/is-auth`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
       },
-    );
+    });
     if (res.ok) {
       const { user } = await res.json();
       console.log("Auth data: ", user);
@@ -40,17 +38,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   const logout = async () => {
-    const res = await fetch(
-      `${import.meta.env.VITE_DOMAIN_URL}/api/auth/logout`,
-      {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
+    const res = await fetch(`${apiDomain}/api/auth/logout`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
       },
-    );
+    });
     if (res.ok) {
       const data = await res.json();
       toast(data.message);

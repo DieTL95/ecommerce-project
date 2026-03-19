@@ -1,8 +1,9 @@
 import type { Orders } from "@/utils/types";
+import { apiDomain } from "@/utils/utils";
 
 export const fetchOrders = async () => {
   try {
-    const res = await fetch(`${import.meta.env.VITE_DOMAIN_URL}/api/orders/`, {
+    const res = await fetch(`${apiDomain}/api/orders/`, {
       method: "GET",
       credentials: "include",
       headers: {
@@ -22,16 +23,13 @@ export const fetchOrders = async () => {
 };
 export const fetchOrderById = async (id: string) => {
   try {
-    const res = await fetch(
-      `${import.meta.env.VITE_DOMAIN_URL}/api/orders/${id}`,
-      {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
+    const res = await fetch(`${apiDomain}/api/orders/${id}`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
       },
-    );
+    });
     if (!res.ok) {
       throw new Error(res.statusText);
     }
@@ -49,18 +47,15 @@ export const updateOrderStatusAction = async (
   status: "paid" | "shipped" | "delivered",
 ) => {
   try {
-    const res = await fetch(
-      `${import.meta.env.VITE_DOMAIN_URL}/api/orders/${id}`,
-      {
-        method: "PATCH",
-        credentials: "include",
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ status }),
+    const res = await fetch(`${apiDomain}/api/orders/${id}`, {
+      method: "PATCH",
+      credentials: "include",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
       },
-    );
+      body: JSON.stringify({ status }),
+    });
     if (!res.ok) {
       throw new Error(res.statusText);
     }
