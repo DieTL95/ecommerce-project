@@ -30,6 +30,6 @@ export const truncateTitle = (title: string) => {
 };
 
 export const apiDomain =
-  import.meta.env.NODE_ENV === "production"
+  import.meta.env.VITE_NODE_ENV === "production"
     ? import.meta.env.VITE_DOMAIN_URL
     : import.meta.env.VITE_DEV_DOMAIN;
