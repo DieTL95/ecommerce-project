@@ -84,6 +84,8 @@ app.use("/api/signed-upload", signedUploadRouter);
 
 app.use(errorMiddleware);
 
-app.listen(5100, () => {
-  console.log("listening on port 5100");
-});
+// app.listen(5100, () => {
+//   console.log("listening on port 5100");
+// });
+
+export default app;

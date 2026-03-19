@@ -19,6 +19,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         "Content-Type": "application/json",
       },
     });
+    console.log(res);
     if (res.ok) {
       const { user } = await res.json();
       console.log("Auth data: ", user);
