@@ -45,12 +45,13 @@ app.use(
   }),
 );
 app.use(express.json());
+app.set("trust proxy", 1);
 app.use(
   session({
     secret: process.env.SESSION_SECRET as string,
     resave: false,
     saveUninitialized: true,
-
+    proxy: true,
     cookie: {
       sameSite: isProduction ? "none" : "lax",
       httpOnly: true,
@@ -85,8 +86,6 @@ app.use("/api/signed-upload", signedUploadRouter);
 
 app.use(errorMiddleware);
 
-// app.listen(5100, () => {
-//   console.log("listening on port 5100");
-// });
-
-export default app;
+app.listen(5100, () => {
+  console.log("listening on port 5100");
+});
