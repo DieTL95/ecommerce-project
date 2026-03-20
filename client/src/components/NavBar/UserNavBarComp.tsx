@@ -68,7 +68,7 @@ const UserNavBarComponent = () => {
                   Account
                 </Link>
                 {user?.admin && <Link to="/admin">Admin</Link>}
-                <Link to="." reloadDocument={true} onClick={logout}>
+                <Link to="." onClick={logout} reloadDocument={true}>
                   Logout
                 </Link>
               </>
