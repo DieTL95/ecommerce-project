@@ -71,7 +71,11 @@ const UserNavBarComponent = () => {
                 <span
                   onClick={() => {
                     logout();
-                    redirect({ to: ".", reloadDocument: true, throw: true });
+                    return redirect({
+                      to: "/",
+                      reloadDocument: true,
+                      throw: true,
+                    });
                   }}
                 >
                   Logout
