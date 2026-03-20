@@ -1,8 +1,21 @@
 import MainWrapper from "@/components/UI/MainWrapper";
-import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Link,
+  Outlet,
+  redirect,
+} from "@tanstack/react-router";
 
 export const Route = createFileRoute("/account")({
   component: RouteComponent,
+  beforeLoad: ({ context: { auth } }) => {
+    if (!auth.isAuthenticated) {
+      redirect({
+        to: "/",
+        throw: true,
+      });
+    }
+  },
 });
 
 function RouteComponent() {

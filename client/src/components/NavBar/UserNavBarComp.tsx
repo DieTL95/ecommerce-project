@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { UserIcon } from "../Icons";
-import { Link, redirect, useRouteContext } from "@tanstack/react-router";
+import {
+  Link,
+  useNavigate,
+  useRouteContext,
+  useRouterState,
+} from "@tanstack/react-router";
 
 const UserNavBarComponent = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -9,7 +14,9 @@ const UserNavBarComponent = () => {
   const {
     auth: { logout, isAuthenticated, user },
   } = useRouteContext({ from: "__root__" });
-
+  const location = useRouterState({ select: (s) => s.location });
+  console.log(location);
+  const navigate = useNavigate();
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
@@ -69,13 +76,10 @@ const UserNavBarComponent = () => {
                 </Link>
                 {user?.admin && <Link to="/admin">Admin</Link>}
                 <span
-                  onClick={() => {
-                    logout();
-                    return redirect({
-                      to: "/",
-                      reloadDocument: true,
-                      throw: true,
-                    });
+                  className="cursor-pointer"
+                  onClick={async () => {
+                    await logout();
+                    navigate({ to: "/", replace: true, reloadDocument: true });
                   }}
                 >
                   Logout

@@ -2,7 +2,6 @@ import { createContext, useCallback, useContext, useState } from "react";
 import type { AuthType, Users } from "../utils/types";
 import toast from "react-hot-toast";
 import { apiDomain } from "@/utils/utils";
-import { redirect } from "@tanstack/react-router";
 
 const authContext = createContext<AuthType | undefined>(undefined);
 
@@ -10,7 +9,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<Users | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-
   const getUser = useCallback(async () => {
     const res = await fetch(`${apiDomain}/api/auth/is-auth`, {
       method: "GET",
@@ -56,7 +54,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(null);
       setIsAuthenticated(false);
       setIsLoading(false);
-      redirect({ to: ".", throw: true, replace: true, reloadDocument: true });
+      getUser();
     } else {
       console.log(res);
 
