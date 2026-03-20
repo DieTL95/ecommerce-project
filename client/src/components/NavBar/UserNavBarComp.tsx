@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { UserIcon } from "../Icons";
-import { Link, useRouteContext } from "@tanstack/react-router";
+import { Link, redirect, useRouteContext } from "@tanstack/react-router";
 
 const UserNavBarComponent = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -68,9 +68,14 @@ const UserNavBarComponent = () => {
                   Account
                 </Link>
                 {user?.admin && <Link to="/admin">Admin</Link>}
-                <Link to="." reloadDocument={true} onClick={logout}>
+                <span
+                  onClick={() => {
+                    logout();
+                    redirect({ to: ".", reloadDocument: true, throw: true });
+                  }}
+                >
                   Logout
-                </Link>
+                </span>
               </>
             ) : (
               <>
