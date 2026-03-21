@@ -27,7 +27,7 @@ export const Route = createFileRoute("/products/")({
   },
   head: () => ({
     meta: [
-      { name: "Products", content: "The products." },
+      { name: "description", content: "The products." },
       { title: "Products" },
     ],
   }),

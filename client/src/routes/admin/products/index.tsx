@@ -8,7 +8,7 @@ export const Route = createFileRoute("/admin/products/")({
   component: RouteComponent,
   validateSearch: productSearchSchema,
 
-  loaderDeps: ({ search }) => ({q: search.q, page: search.page}),
+  loaderDeps: ({ search }) => ({ q: search.q, page: search.page }),
   loader: async ({ deps }) => {
     const data = await fetchProducts(deps);
     if (!data) {
@@ -24,7 +24,7 @@ export const Route = createFileRoute("/admin/products/")({
   },
   head: () => ({
     meta: [
-      { name: "Products", content: "The products." },
+      { name: "description", content: "The products." },
       { title: "Products" },
     ],
   }),

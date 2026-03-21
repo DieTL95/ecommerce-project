@@ -26,6 +26,12 @@ export const Route = createFileRoute("/checkout/post-checkout/")({
     <div>An error occured during payment.</div>;
   },
   loaderDeps: ({ search }: Search) => search,
+  head: () => ({
+    meta: [
+      { name: "description", content: "Checkout-purchase result page." },
+      { title: "Post-Checkout" },
+    ],
+  }),
 });
 
 function RouteComponent() {

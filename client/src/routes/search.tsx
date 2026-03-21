@@ -9,7 +9,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 export const Route = createFileRoute("/search")({
   component: RouteComponent,
   validateSearch: productSearchSchema,
-  loaderDeps: ({ search }) => ({q: search.q, page: search.page}),
+  loaderDeps: ({ search }) => ({ q: search.q, page: search.page }),
 
   loader: async ({ deps }) => {
     const data = await fetchProducts(deps);
@@ -28,10 +28,10 @@ export const Route = createFileRoute("/search")({
       </MainWrapper>
     );
   },
-  head: () => ({
+  head: ({ match }) => ({
     meta: [
-      { name: "Products", content: "The products." },
-      { title: "Products" },
+      { name: "description", content: "Search for products." },
+      { title: `Search for "${match.search.q}"` },
     ],
   }),
 });

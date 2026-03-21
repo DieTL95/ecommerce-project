@@ -15,6 +15,12 @@ const defaultValues: z.infer<typeof categorySchema> = {
 
 export const Route = createFileRoute("/admin/add-category")({
   component: RouteComponent,
+  head: () => ({
+    meta: [
+      { name: "description", content: "Add a new category." },
+      { title: "Add Category " },
+    ],
+  }),
 });
 
 const { useAppForm } = createFormHook({

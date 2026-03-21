@@ -10,6 +10,12 @@ import MainWrapper from "@/components/UI/MainWrapper";
 import toaster from "react-hot-toast";
 export const Route = createFileRoute("/auth/register")({
   component: RouteComponent,
+  head: () => ({
+    meta: [
+      { name: "description", content: "Registeration page" },
+      { title: "Register" },
+    ],
+  }),
 });
 
 const { useAppForm } = createFormHook({

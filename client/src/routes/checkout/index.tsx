@@ -57,6 +57,12 @@ export const Route = createFileRoute("/checkout/")({
     return { cart, address };
   },
   notFoundComponent: () => redirect({ to: "/cart", throw: true }),
+  head: () => ({
+    meta: [
+      { name: "description", content: "Checkout page for the ecommerce site" },
+      { title: "Checkout" },
+    ],
+  }),
 });
 
 function RouteComponent() {

@@ -13,6 +13,15 @@ export const Route = createFileRoute("/account/orders/$id/")({
   notFoundComponent: () => {
     return <div>Order doesn't eixst</div>;
   },
+  head: ({ params }) => ({
+    meta: [
+      {
+        name: "description",
+        content: "See an order's status and description.",
+      },
+      { title: `Order #${params.id}` },
+    ],
+  }),
 });
 
 function RouteComponent() {

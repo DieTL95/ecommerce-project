@@ -16,6 +16,12 @@ export const Route = createFileRoute("/account")({
       });
     }
   },
+  head: () => ({
+    meta: [
+      { name: "description", content: "Manage your account." },
+      { title: "Account | " },
+    ],
+  }),
 });
 
 function RouteComponent() {

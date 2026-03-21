@@ -5,6 +5,16 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/cart/")({
   component: RouteComponent,
+  head: () => ({
+    meta: [
+      {
+        name: "description",
+        content:
+          "Cart page where you can see the products you have in your cart.",
+      },
+      { title: "Cart" },
+    ],
+  }),
 });
 
 const DeleteIcon = () => {

@@ -17,6 +17,12 @@ export const Route = createFileRoute("/account/address-book/")({
       return data;
     }
   },
+  head: () => ({
+    meta: [
+      { name: "description", content: "Manage your addresses." },
+      { title: "Addresses" },
+    ],
+  }),
 });
 
 function RouteComponent() {

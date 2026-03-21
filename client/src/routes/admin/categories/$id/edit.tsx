@@ -27,7 +27,7 @@ export const Route = createFileRoute("/admin/categories/$id/edit")({
   },
   head: ({ loaderData }) => ({
     meta: [
-      { name: "title", content: "The categories." },
+      { name: "description", content: "The categories." },
       { title: loaderData?.name },
     ],
   }),

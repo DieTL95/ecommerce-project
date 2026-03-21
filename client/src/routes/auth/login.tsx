@@ -15,6 +15,9 @@ export const Route = createFileRoute("/auth/login")({
       throw redirect({ to: "/" });
     }
   },
+  head: () => ({
+    meta: [{ name: "description", content: "Login page" }, { title: "Login" }],
+  }),
 });
 
 const { useAppForm } = createFormHook({

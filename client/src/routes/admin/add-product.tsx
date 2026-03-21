@@ -16,6 +16,12 @@ import { useEffect, useState } from "react";
 import type { Images } from "@/utils/types";
 export const Route = createFileRoute("/admin/add-product")({
   component: RouteComponent,
+   head: () => ({
+    meta: [
+      { name: "description", content: "Add a new product." },
+      { title: "Add Product " },
+    ],
+  }),
 });
 
 const { useAppForm } = createFormHook({

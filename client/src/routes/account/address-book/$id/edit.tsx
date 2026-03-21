@@ -21,6 +21,12 @@ export const Route = createFileRoute("/account/address-book/$id/edit")({
   notFoundComponent: () => {
     return <div>Address doesn't exist</div>;
   },
+  head: ({ params }) => ({
+    meta: [
+      { name: "description", content: "Manage or edit your address." },
+      { title: `Edit Address #${params.id}` },
+    ],
+  }),
 });
 
 const { useAppForm } = createFormHook({

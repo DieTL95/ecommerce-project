@@ -11,6 +11,12 @@ import toast from "react-hot-toast";
 
 export const Route = createFileRoute("/account/address-book/new-address")({
   component: RouteComponent,
+   head: () => ({
+    meta: [
+      { name: "description", content: "Add a new address." },
+      { title: "New Address Page" },
+    ],
+  }),
 });
 
 const { useAppForm } = createFormHook({

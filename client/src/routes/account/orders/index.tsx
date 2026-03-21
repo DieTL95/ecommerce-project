@@ -8,6 +8,12 @@ export const Route = createFileRoute("/account/orders/")({
       return data;
     }
   },
+  head: () => ({
+    meta: [
+      { name: "description", content: "See your order history." },
+      { title: "Orders" },
+    ],
+  }),
 });
 
 function RouteComponent() {

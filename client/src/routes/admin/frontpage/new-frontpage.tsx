@@ -16,6 +16,12 @@ const searchSchema = z.object({
 export const Route = createFileRoute("/admin/frontpage/new-frontpage")({
   component: RouteComponent,
   validateSearch: searchSchema,
+  head: () => ({
+    meta: [
+      { name: "description", content: "Create a new frontpage" },
+      { title: "New Frontpage" },
+    ],
+  }),
 });
 
 const { useAppForm } = createFormHook({

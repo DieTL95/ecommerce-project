@@ -21,6 +21,12 @@ import { z } from "zod";
 export const Route = createFileRoute("/admin/products/$id/edit")({
   component: RouteComponent,
   loader: async ({ params }) => await fetchOneProduct(params.id),
+ head: ({ loaderData }) => ({
+    meta: [
+      { name: "description", content: loaderData?.description },
+      { title: `Edit Product | ${loaderData?.name}` },
+    ],
+  }),
 });
 
 const { useAppForm } = createFormHook({
