@@ -19,8 +19,8 @@ const RootLayout = () => (
     <HeadContent />
     <div className=" w-full flex justify-center flex-col">
       <div className="p-2 flex gap-2 items-center justify-center ">
-        <div className="max-w-[70vw] w-full justify-between flex flex-col gap-4 my-4">
-          <div className="flex flex-row w-full justify-between items-center">
+        <div className="md:max-w-[70vw] w-full justify-between flex flex-col gap-4 my-4">
+          <div className="flex flex-row w-full gap-4 justify-between items-center">
             <Link to="/" className="[&.active]:font-bold">
               Home
             </Link>

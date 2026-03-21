@@ -1,3 +1,4 @@
+import ProductRowsSkeleton from "@/components/LoadingComps/ProductRowsSkeleton";
 import ProductCard from "@/components/Products/ProductCard";
 import ProductsRow from "@/components/Products/ProductsRow";
 import MainWrapper from "@/components/UI/MainWrapper";
@@ -22,7 +23,14 @@ export const Route = createFileRoute("/$category/")({
     }
     return data;
   },
+  pendingComponent: () => <ProductRowsSkeleton numOfCards={8} />,
   notFoundComponent: () => <div>No such category exists.</div>,
+  head: ({ loaderData }) => ({
+    meta: [
+      { name: "description", content: "All products of the category." },
+      { title: `All ${loaderData?.name} Products` },
+    ],
+  }),
 });
 
 function RouteComponent() {

@@ -10,7 +10,7 @@ const ProductsRow = ({
 }) => {
   return (
     <div className="w-full my-2 h-full">
-      <div className="grid w-full justify-between grid-cols-4 gap-2 h-full relative">
+      <div className="grid w-full justify-between lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-2 h-full relative">
         {products
           ? products.map((prod) => <ProductCard product={prod} />)
           : children}

@@ -1,5 +1,5 @@
 import { cld } from "@/utils/cloudinary";
-import { AdvancedImage } from "@cloudinary/react";
+import { AdvancedImage, placeholder } from "@cloudinary/react";
 import { fit } from "@cloudinary/url-gen/actions/resize";
 
 const ProductThumbnail = ({
@@ -16,7 +16,9 @@ const ProductThumbnail = ({
       .width(width || 330)
       .height(height || 345),
   );
-  return <AdvancedImage cldImg={image} />;
+  return (
+    <AdvancedImage cldImg={image} plugins={[placeholder({ mode: "blur" })]} />
+  );
 };
 
 export default ProductThumbnail;

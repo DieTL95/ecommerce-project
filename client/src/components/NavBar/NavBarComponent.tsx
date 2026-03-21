@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 
 const NavBarComponent = () => {
   return (
-    <nav className=" w-full gap-24 justify-center flex">
+    <nav className=" w-full xl:gap-24 sm:gap-16 sm:justify-center justify-between flex ">
       <Link
         to="/$category"
         params={{ category: "88c5f8f7-4bd0-421e-a7eb-56b70680e1a8" }}

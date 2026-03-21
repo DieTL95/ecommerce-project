@@ -111,6 +111,7 @@ export interface CountedResults<A> {
   total: number;
   pages: number;
   nextPage: boolean;
+  name?: string;
 }
 
 export interface Addresses {

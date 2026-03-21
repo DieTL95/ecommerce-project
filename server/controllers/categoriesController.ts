@@ -53,9 +53,14 @@ export const getOneCategoryProducts = async (req: Request, res: Response) => {
           .as("products"),
       (join) => join.onTrue(),
     )
-
     .selectAll();
-  const [results, total] = await Promise.all([
+
+  const catgName = db
+    .selectFrom("categories")
+    .where("categories.id", "=", req.params.id)
+    .select("categories.name");
+
+  const [results, total, cName] = await Promise.all([
     catg
       .offset((Number(req.query.page) - 1) * 12 || 0)
       .limit(Number(req.query.limit) || 12)
@@ -65,12 +70,14 @@ export const getOneCategoryProducts = async (req: Request, res: Response) => {
       .clearSelect()
       .select((eb) => [eb.fn.countAll<number>().as("count")])
       .executeTakeFirstOrThrow(),
+    catgName.executeTakeFirstOrThrow(),
   ]);
 
   return res.status(200).json({
     results,
     total: total.count,
     pages: Math.ceil(total.count / 12),
+    name: cName.name,
   });
 };
 

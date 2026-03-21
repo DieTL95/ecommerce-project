@@ -51,7 +51,7 @@ const UserNavBarComponent = () => {
         <UserIcon />
       </div>
       {menuOpen && (
-        <div className="absolute top-8  w-52 z-50">
+        <div className="absolute top-8 md:sm:right-auto right-0 sm:w-32 md:w-52 w-24 z-50">
           <div
             className="bg-black flex flex-col rounded-xl justify-center items-center gap-y-4 py-2 *:hover:border-b"
             ref={menuRef}

@@ -1,3 +1,4 @@
+import ProductRowsSkeleton from "@/components/LoadingComps/ProductRowsSkeleton";
 import ProductCard from "@/components/Products/ProductCard";
 import AddToCartButton from "@/components/UI/AddToCartButton";
 import MainWrapper from "@/components/UI/MainWrapper";
@@ -20,6 +21,7 @@ export const Route = createFileRoute("/products/")({
     }
     return data;
   },
+  pendingComponent: () => <ProductRowsSkeleton numOfCards={8} />,
   notFoundComponent: () => {
     return <div>No products found.</div>;
   },

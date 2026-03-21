@@ -8,7 +8,7 @@ const ProductCard = ({ product }: { product: Products }) => {
       <div className="flex flex-col place-content-between items-center h-full w-full">
         <div className=" h-full">
           {product.images && product.images.length > 0 && (
-            <div className="object-fill h-full">
+            <div className="object-fill min-h-[150px] h-full">
               <ProductThumbnail imageId={product.images[0].public_id} />
             </div>
           )}

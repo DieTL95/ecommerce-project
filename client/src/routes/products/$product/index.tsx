@@ -36,11 +36,11 @@ function RouteComponent() {
   return (
     <MainWrapper>
       <div className="w-full flex flex-col justify-center items-center">
-        <div className="w-[90%] flex flex-row">
+        <div className="w-[90%] flex lg:flex-row flex-col">
           <div className="flex-3/4 flex flex-row  justify-center">
             {data.images && data.images.length > 0 && (
-              <div className="flex flex-row gap-2">
-                <div className="flex flex-col gap-2">
+              <div className="flex md:flex-row  flex-col-reverse gap-2">
+                <div className="flex md:flex-col flex-row gap-2">
                   {data.images.map((img, index) => (
                     <div
                       key={img.public_id}
@@ -60,11 +60,6 @@ function RouteComponent() {
                     src={data.images[currentImage].secure_url}
                   />
                 </div>
-                {/* <ProductThumbnail
-                  imageId={data.images[currentImage].public_id}
-                  width={350}
-                  height={525}
-                /> */}
               </div>
             )}
           </div>
