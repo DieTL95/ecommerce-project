@@ -106,9 +106,6 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const deleteCart = async (id: string) => {
-    if (!cart) {
-      return;
-    }
     setLoading(true);
 
     const res = await deleteCartItem(id);

@@ -1,4 +1,5 @@
 import { cn } from "@sglara/cn";
+import Spinner from "../Icons/Spinner";
 
 const CartButton = ({
   loading,
@@ -22,7 +23,7 @@ const CartButton = ({
       disabled={loading}
       onClick={onClick}
     >
-      {label}
+      {loading ? <Spinner /> : label}
     </button>
   );
 };

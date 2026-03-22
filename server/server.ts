@@ -71,7 +71,7 @@ app.use(
 passport.use(strategy);
 app.use(passport.initialize());
 app.use(passport.session());
-
+app.use((req, res) => console.log(req.session));
 app.use("/api/auth", authRouter);
 app.use("/api/frontpage", frontpageRouter);
 app.use("/api/checkout", checkoutRouter);
