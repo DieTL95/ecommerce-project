@@ -242,7 +242,7 @@ export const updateCartAction = async ({
 
 export const deleteCartItem = async (id: string) => {
   try {
-    const res = await fetch(` /api/cart/${id}`, {
+    const res = await fetch(`${apiDomain}/api/cart/${id}`, {
       method: "DELETE",
       credentials: "include",
       headers: {
@@ -260,7 +260,7 @@ export const deleteCartItem = async (id: string) => {
 
 export const clearCartAction = async () => {
   try {
-    const res = await fetch(` /api/cart`, {
+    const res = await fetch(`${apiDomain}/api/cart`, {
       method: "DELETE",
       credentials: "include",
       headers: {
@@ -299,7 +299,7 @@ export const createOrderAction = async ({
       order_items,
     });
 
-    const res = await fetch(` /api/orders`, {
+    const res = await fetch(`${apiDomain}/api/orders`, {
       method: "POST",
       credentials: "include",
       headers: {
