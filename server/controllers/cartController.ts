@@ -26,7 +26,7 @@ export const createCart = async (req: Request, res: Response) => {
     .values(body)
     .returningAll()
     .executeTakeFirstOrThrow(
-      (er) => new Error("Cart creation failed.", { cause: er })
+      (er) => new Error("Cart creation failed.", { cause: er }),
     );
 
   if (cart) {
@@ -35,7 +35,7 @@ export const createCart = async (req: Request, res: Response) => {
       .where("sid", "=", req.sessionID)
       .set({ sess: { cart_id: cart.id, cookie: req.session.cookie } })
       .executeTakeFirstOrThrow(
-        (er) => new Error("Adding cart_id to session failed.", { cause: er })
+        (er) => new Error("Adding cart_id to session failed.", { cause: er }),
       );
   }
 
@@ -53,7 +53,7 @@ export const getCurrentCart = async (req: Request, res: Response) => {
           .selectFrom("cart_items")
           .whereRef("cart_items.cart_id", "=", "cart.id")
           .leftJoin("products", (join) =>
-            join.onRef("products.id", "=", "cart_items.product_id")
+            join.onRef("products.id", "=", "cart_items.product_id"),
           )
           .select(({ fn, ref, table }) =>
             fn
@@ -64,18 +64,17 @@ export const getCurrentCart = async (req: Request, res: Response) => {
                   price: ref("cart_items.price"),
                   total_price: ref("cart_items.total_price"),
                   product: table("products"),
-                })
+                }),
               )
-              .as("cart_items")
+              .as("cart_items"),
           )
           .groupBy("cart_id")
           .as("cart_items"),
-      (join) => join.onTrue()
+      (join) => join.onTrue(),
     )
     .select("cart_items.cart_items")
 
     .executeTakeFirst();
-
 
   return res.status(200).json(cart);
 };
@@ -85,13 +84,13 @@ export const getCartById = async (req: Request, res: Response) => {
     .selectFrom("cart")
     .where("cart.id", "=", req.params.id)
     .selectAll("cart")
-     .leftJoinLateral(
+    .leftJoinLateral(
       (eb) =>
         eb
           .selectFrom("cart_items")
           .whereRef("cart_items.cart_id", "=", "cart.id")
           .leftJoin("products", (join) =>
-            join.onRef("products.id", "=", "cart_items.product_id")
+            join.onRef("products.id", "=", "cart_items.product_id"),
           )
           .select(({ fn, ref, table }) =>
             fn
@@ -102,13 +101,13 @@ export const getCartById = async (req: Request, res: Response) => {
                   price: ref("cart_items.price"),
                   total_price: ref("cart_items.total_price"),
                   product: table("products"),
-                })
+                }),
               )
-              .as("cart_items")
+              .as("cart_items"),
           )
           .groupBy("cart_id")
           .as("cart_items"),
-      (join) => join.onTrue()
+      (join) => join.onTrue(),
     )
     .select("cart_items.cart_items")
 
@@ -124,7 +123,7 @@ export const getCartItems = async (req: Request, res: Response) => {
     .where((arg) =>
       arg.and({
         cart_id: req.user?.id,
-      })
+      }),
     )
     .innerJoin("products", "products.id", "cart_items.product_id")
     .execute()
@@ -168,14 +167,9 @@ export const deleteCartItem = async (req: Request, res: Response) => {
 };
 
 export const clearCart = async (req: Request, res: Response) => {
-  if (!req.user || !req.user.cart_id) {
-    throw new BadRequestError("");
-  }
-
   await db
     .deleteFrom("cart_items")
-    .where("cart_id", "=", req.user.cart_id)
-
+    .where("cart_id", "=", req.params.id)
     .execute();
   return res.json({ message: "Cart Cleared." });
 };

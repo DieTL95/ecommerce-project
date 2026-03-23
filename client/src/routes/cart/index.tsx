@@ -1,3 +1,5 @@
+import DeleteIcon from "@/components/Icons/DeleteIcon";
+import Button from "@/components/UI/Button";
 import MainWrapper from "@/components/UI/MainWrapper";
 import { useCart } from "@/context/cart-context";
 import { dollarsPrice } from "@/utils/utils";
@@ -17,29 +19,6 @@ export const Route = createFileRoute("/cart/")({
   }),
 });
 
-const DeleteIcon = () => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="lucide lucide-trash2-icon lucide-trash-2"
-    >
-      <path d="M10 11v6" />
-      <path d="M14 11v6" />
-      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
-      <path d="M3 6h18" />
-      <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-    </svg>
-  );
-};
-
 function RouteComponent() {
   const { cart, deleteCart } = useCart();
   if (!cart || !cart.cart_items) {
@@ -52,10 +31,13 @@ function RouteComponent() {
   console.log(cart);
   return (
     <MainWrapper>
-      <div className="flex flex-row">
+      <div className="flex flex-row gap-2">
         <div className="flex-4/5 w-full">
           {cart?.cart_items?.map((item) => (
-            <div key={item.id} className="flex flex-row gap-2">
+            <div
+              key={item.id}
+              className="p-4 border rounded-2xl border-gray-500/80 flex flex-row gap-2"
+            >
               <Link
                 to="/products/$product"
                 params={{ product: item.product.id }}
@@ -67,14 +49,24 @@ function RouteComponent() {
                     className="max-h-52"
                   />
                 )}
-
-                <div>{item.product.name}</div>
               </Link>
-              <div>{item.quantity}</div>
-              <div>{dollarsPrice(item.total_price!)}</div>
-              <button onClick={() => deleteCart(item.product.id)}>
-                <DeleteIcon />
-              </button>
+              <div className="flex flex-row gap-4">
+                <Link
+                  to="/products/$product"
+                  params={{ product: item.product.id }}
+                >
+                  <div>{item.product.name}</div>{" "}
+                </Link>
+
+                <div>{item.quantity}</div>
+                <div>{dollarsPrice(item.total_price!)}</div>
+                <Button
+                  className="w-fit h-fit bg-black/0 hover:bg-black/50 p-2"
+                  onClick={() => deleteCart(item.product.id)}
+                >
+                  <DeleteIcon />
+                </Button>
+              </div>
             </div>
           ))}
         </div>
@@ -90,12 +82,9 @@ function RouteComponent() {
           </div>
           <div>
             <Link to="/checkout" search={() => ({ cartId: cart.id })}>
-              <button
-                type="button"
-                className="w-full my-2 py-2 bg-black text-white rounded-md cursor-pointer"
-              >
+              <Button className="w-full my-2 py-2 bg-black text-white rounded-md cursor-pointer">
                 Checkout
-              </button>
+              </Button>
             </Link>
           </div>
         </div>

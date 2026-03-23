@@ -115,13 +115,13 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     setLoading(false);
   };
 
-  const clearCart = async () => {
+  const clearCart = async (id: string) => {
     if (!cart) {
       return;
     }
     setLoading(true);
 
-    const res = await clearCartAction();
+    const res = await clearCartAction(id);
     if (!res?.error) {
       handleCart();
     }

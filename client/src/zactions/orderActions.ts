@@ -67,3 +67,20 @@ export const updateOrderStatusAction = async (
     console.log("error: ", error);
   }
 };
+
+export const fetchPaymentIntentAction = async (val: number) => {
+  try {
+    const res = await fetch(`${apiDomain}/api/checkout/payment-intent`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount: val }),
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      return data;
+    }
+  } catch (error) {
+    console.log("error: ", error);
+  }
+};

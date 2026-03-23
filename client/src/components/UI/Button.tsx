@@ -11,7 +11,7 @@ const Button = ({
   label?: string;
   className?: string;
   children?: React.ReactNode;
-  onClick: () => Promise<void>;
+  onClick?: () => Promise<void>;
 }) => {
   return (
     <button

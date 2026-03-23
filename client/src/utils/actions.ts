@@ -184,7 +184,7 @@ export const addToCartAction = async (
       quantity,
     });
 
-    const res = await fetch(`${apiDomain}/api/cart/${cart_id}`, {
+    const res = await fetch(`${apiDomain}/api/cart/${cart_id}/item`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -242,7 +242,7 @@ export const updateCartAction = async ({
 
 export const deleteCartItem = async (id: string) => {
   try {
-    const res = await fetch(`${apiDomain}/api/cart/${id}`, {
+    const res = await fetch(`${apiDomain}/api/cart/${id}/item`, {
       method: "DELETE",
       credentials: "include",
       headers: {
@@ -258,9 +258,9 @@ export const deleteCartItem = async (id: string) => {
   }
 };
 
-export const clearCartAction = async () => {
+export const clearCartAction = async (id: string) => {
   try {
-    const res = await fetch(`${apiDomain}/api/cart`, {
+    const res = await fetch(`${apiDomain}/api/cart/${id}`, {
       method: "DELETE",
       credentials: "include",
       headers: {

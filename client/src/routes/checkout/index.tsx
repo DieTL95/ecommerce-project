@@ -2,13 +2,12 @@ import MainWrapper from "@/components/UI/MainWrapper";
 import { fetchCartByIdAction } from "@/utils/actions";
 import { fetchOneAddress } from "@/zactions/addressActions";
 import { createFileRoute, notFound, redirect } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { z } from "zod";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "@/components/Forms/CheckoutForm";
-import { apiDomain } from "@/utils/utils";
+import { fetchPaymentIntentAction } from "@/zactions/orderActions";
 
 const checkoutSearchParams = z.object({
   cartId: z.uuidv4(),
@@ -54,7 +53,15 @@ export const Route = createFileRoute("/checkout/")({
     const address = await fetchOneAddress(
       addId || (auth.user?.default_address_id as string),
     );
-    return { cart, address };
+
+    const val = cart.cart_items
+      .map((item) => item.total_price)
+      .reduce((a, b) => a && b && a + b);
+    if (!val) {
+      throw notFound();
+    }
+    const clientSecret = await fetchPaymentIntentAction(val);
+    return { cart, address, clientSecret, val };
   },
   notFoundComponent: () => redirect({ to: "/cart", throw: true }),
   head: () => ({
@@ -66,9 +73,7 @@ export const Route = createFileRoute("/checkout/")({
 });
 
 function RouteComponent() {
-  const [clientSecret, setClientSecret] = useState("");
-
-  const { cart, address } = Route.useLoaderData();
+  const { cart, address, clientSecret, val } = Route.useLoaderData();
   const { addId } = Route.useSearch();
   const {
     auth: { user },
@@ -77,9 +82,6 @@ function RouteComponent() {
   if (!cart.cart_items) {
     return;
   }
-  const val = cart.cart_items
-    .map((item) => item.total_price)
-    .reduce((a, b) => a && b && a + b);
 
   const user_id = user?.id;
   const order_items = cart.cart_items.map((item) => {
@@ -91,32 +93,8 @@ function RouteComponent() {
   });
   console.log("order items : ", order_items);
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  useEffect(() => {
-    fetch(`${apiDomain}/api/checkout/payment-intent`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ amount: val }),
-    })
-      .then((res) => res.json())
-      .then((data) => setClientSecret(data.clientSecret));
-  }, []);
-
   return (
     <MainWrapper>
-      {/* <div className="flex flex-col w-full">
-        <div className="flex flex-col gap-2 p-4 border border-gray-500/70 rounded-2xl">
-          <span className="font-bold text-xl">{address?.label}</span>
-          <div className="grid grid-cols-3">
-            <span>{address?.address_one}</span>
-            <span>{address?.address_two}</span>
-            <span>{address?.city}</span>
-            <span>{address?.province}</span>
-            <span>{address?.zipcode}</span>
-            <span>{address?.phonenumber}</span>
-          </div>
-        </div> */}
-
       <div className="flex flex-row w-full">
         <div className="flex-4/5 w-full flex-col">
           <div className="flex flex-col w-full">
@@ -161,20 +139,8 @@ function RouteComponent() {
               </Elements>
             </div>
           )}
-          {/* <button
-            disabled={loading}
-            type="button"
-            className={cn(
-              "w-full my-2 py-2 bg-black text-white rounded-md cursor-pointer",
-              loading && "cursor-wait",
-            )}
-            onClick={handleOrder}
-          >
-            Create Order
-          </button> */}
         </div>
       </div>
-      {/* </div> */}
     </MainWrapper>
   );
 }

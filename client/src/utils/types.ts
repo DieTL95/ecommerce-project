@@ -27,7 +27,7 @@ export type CartContextType = {
   incrementCart: (currentQuantity: number, productId: string) => Promise<void>;
 
   decrementCart: (currentQuantity: number, productId: string) => Promise<void>;
-  clearCart: () => Promise<void>;
+  clearCart: (id: string) => Promise<void>;
   deleteCart: (productId: string) => Promise<void>;
 };
 

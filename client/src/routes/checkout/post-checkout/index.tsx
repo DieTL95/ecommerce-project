@@ -1,3 +1,4 @@
+import LoadingPage from "@/components/UI/LoadingPage";
 import MainWrapper from "@/components/UI/MainWrapper";
 import { updateOrderStatusAction } from "@/zactions/orderActions";
 import { useStripe } from "@stripe/react-stripe-js";
@@ -26,6 +27,7 @@ export const Route = createFileRoute("/checkout/post-checkout/")({
     <div>An error occured during payment.</div>;
   },
   loaderDeps: ({ search }: Search) => search,
+  pendingComponent: () => <LoadingPage />,
   head: () => ({
     meta: [
       { name: "description", content: "Checkout-purchase result page." },
@@ -37,7 +39,7 @@ export const Route = createFileRoute("/checkout/post-checkout/")({
 function RouteComponent() {
   const [paymentStatus, setPaymentStatus] = useState<PaymentIntent.Status>();
   const deps = Route.useLoaderDeps();
-  const { clearCart } = Route.useRouteContext();
+  const { clearCart, cart } = Route.useRouteContext();
   console.log(deps);
   const stripe = useStripe();
 
@@ -56,7 +58,10 @@ function RouteComponent() {
 
       if (paymentIntent?.status === "succeeded") {
         await updateOrderStatusAction(deps.order_id!, "paid");
-        clearCart();
+        if (!cart) {
+          return;
+        }
+        clearCart(cart.id);
       }
     };
 

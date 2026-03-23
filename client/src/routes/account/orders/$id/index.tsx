@@ -1,3 +1,4 @@
+import ProductThumbnail from "@/components/UI/ProductThumbnail";
 import { fetchOrderById } from "@/zactions/orderActions";
 import { createFileRoute, notFound } from "@tanstack/react-router";
 
@@ -33,14 +34,9 @@ function RouteComponent() {
         <div className="flex flex-row" key={item.id}>
           {item.product.images && (
             <div>
-              <img
-                style={{
-                  height: "150px",
-                  width: "150px",
-                  objectFit: "fill",
-                }}
-                src={item.product.images[0].secure_url}
-                alt={item.product.name}
+              <ProductThumbnail
+                imageId={item.product.images[0].public_id}
+                width={75}
               />
             </div>
           )}

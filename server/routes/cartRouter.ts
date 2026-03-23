@@ -18,10 +18,8 @@ router
   .patch(updateCart)
   .delete(clearCart);
 
-router
-  .route("/:id")
-  .get(getCartById)
-  .post(addItemToCart)
-  .delete(deleteCartItem);
+router.route("/:id").get(getCartById).delete(clearCart);
+
+router.route("/:id/item").post(addItemToCart).delete(deleteCartItem);
 
 export default router;
