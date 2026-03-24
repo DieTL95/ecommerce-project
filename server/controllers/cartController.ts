@@ -167,9 +167,10 @@ export const deleteCartItem = async (req: Request, res: Response) => {
 };
 
 export const clearCart = async (req: Request, res: Response) => {
+  console.log(req.user, req.session);
   await db
     .deleteFrom("cart_items")
-    .where("cart_id", "=", req.params.id)
+    .where("cart_id", "=", req.user?.cart_id || req.session.cart_id!)
     .execute();
   return res.json({ message: "Cart Cleared." });
 };

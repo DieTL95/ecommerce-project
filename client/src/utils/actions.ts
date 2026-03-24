@@ -258,9 +258,9 @@ export const deleteCartItemAction = async (id: string) => {
   }
 };
 
-export const clearCartAction = async (id: string) => {
+export const clearCartAction = async () => {
   try {
-    const res = await fetch(`${apiDomain}/api/cart/${id}`, {
+    const res = await fetch(`${apiDomain}/api/cart`, {
       method: "DELETE",
       credentials: "include",
       headers: {

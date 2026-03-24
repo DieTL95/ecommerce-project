@@ -18,7 +18,7 @@ router
   .patch(updateCart)
   .delete(clearCart);
 
-router.route("/:id").get(getCartById).delete(clearCart);
+router.route("/:id").get(getCartById);
 
 router.route("/:id/item").post(addItemToCart).delete(deleteCartItem);
 

@@ -23,6 +23,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const [cart, setCart] = useState<Cart | undefined>();
   const [loading, setLoading] = useState(false);
   const { user, getUser } = useAuth();
+
   const handleCart = useCallback(async () => {
     const res = await handleCartAction();
     setCart(res);
@@ -32,7 +33,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     handleCart();
   }
   if (!cart) {
-    console.log("hello");
+    console.log("hello no cart");
   }
 
   const sum = useMemo(() => {
@@ -122,13 +123,10 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     setLoading(false);
   };
 
-  const clearCart = async (id: string) => {
-    if (!cart) {
-      return;
-    }
+  const clearCart = async () => {
     setLoading(true);
 
-    const res = await clearCartAction(id);
+    const res = await clearCartAction();
     if (!res?.error) {
       handleCart();
     }

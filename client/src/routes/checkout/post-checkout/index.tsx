@@ -39,7 +39,7 @@ export const Route = createFileRoute("/checkout/post-checkout/")({
 function RouteComponent() {
   const [paymentStatus, setPaymentStatus] = useState<PaymentIntent.Status>();
   const deps = Route.useLoaderDeps();
-  const { clearCart, cart } = Route.useRouteContext();
+  const { clearCart } = Route.useRouteContext();
   console.log(deps);
   const stripe = useStripe();
 
@@ -49,24 +49,24 @@ function RouteComponent() {
     }
     const getIntent = async () => {
       if (!stripe) return;
-      const { paymentIntent } = await stripe.retrievePaymentIntent(
+      const payment = await stripe.retrievePaymentIntent(
         deps.payment_intent_client_secret!,
       );
+      if (payment.error) {
+        throw notFound();
+      }
+      const paymentIntent = payment.paymentIntent;
 
-      console.log(paymentIntent);
       setPaymentStatus(paymentIntent?.status);
 
-      if (paymentIntent?.status === "succeeded") {
+      if (paymentIntent.status === "succeeded") {
         await updateOrderStatusAction(deps.order_id!, "paid");
-        if (!cart) {
-          return;
-        }
-        clearCart(cart.id);
+        await clearCart();
       }
     };
 
     getIntent();
-  }, [stripe]);
+  }, [stripe, deps]);
 
   const returendCase = () => {
     switch (paymentStatus) {
