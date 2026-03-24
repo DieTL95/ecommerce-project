@@ -49,7 +49,7 @@ export const Route = createFileRoute("/cart/")({
 function RouteComponent() {
   const { cart, val } = Route.useLoaderData();
   const {
-    cartContext: { deleteCartItem },
+    cartContext: { deleteCartItem, loading },
   } = Route.useRouteContext();
   const router = useRouter();
   const handleDelete = async (id: string, name: string) => {
@@ -90,6 +90,7 @@ function RouteComponent() {
                 <div>{dollarsPrice(item.total_price!)}</div>
                 <Button
                   className="w-fit h-fit bg-black/0 hover:bg-black/50 p-2"
+                  loading={loading}
                   onClick={() =>
                     handleDelete(item.product.id, item.product.name)
                   }

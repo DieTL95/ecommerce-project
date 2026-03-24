@@ -6,12 +6,14 @@ const Button = ({
   className,
   children,
   onClick,
+  props,
 }: {
   loading?: boolean;
   label?: string;
   className?: string;
   children?: React.ReactNode;
   onClick?: () => Promise<void>;
+  props?: React.ComponentProps<"button">;
 }) => {
   return (
     <button
@@ -23,6 +25,7 @@ const Button = ({
       )}
       disabled={loading}
       onClick={onClick}
+      {...props}
     >
       {label ? label : children}
     </button>

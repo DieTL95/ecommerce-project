@@ -8,6 +8,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "@/components/Forms/CheckoutForm";
 import { fetchPaymentIntentAction } from "@/zactions/orderActions";
+import LoadingPage from "@/components/UI/LoadingPage";
 
 const checkoutSearchParams = z.object({
   cartId: z.uuidv4(),
@@ -60,10 +61,11 @@ export const Route = createFileRoute("/checkout/")({
     if (!val) {
       throw notFound();
     }
-    const clientSecret = await fetchPaymentIntentAction(val);
+    const { clientSecret } = await fetchPaymentIntentAction(val);
     return { cart, address, clientSecret, val };
   },
   notFoundComponent: () => redirect({ to: "/cart", throw: true }),
+  pendingComponent: () => <LoadingPage />,
   head: () => ({
     meta: [
       { name: "description", content: "Checkout page for the ecommerce site" },
