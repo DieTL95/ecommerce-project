@@ -2,7 +2,7 @@ import {
   addToCartAction,
   clearCartAction,
   createCartAction,
-  deleteCartItem,
+  deleteCartItemAction,
   handleCartAction,
   updateCartAction,
 } from "@/utils/actions";
@@ -15,6 +15,7 @@ import {
   useState,
 } from "react";
 import { useAuth } from "./auth-context";
+import toast from "react-hot-toast";
 
 const cartContext = createContext<CartContextType | undefined>(undefined);
 
@@ -90,6 +91,8 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
       setCart(updatedCart);
     }
+    handleCart();
+
     setLoading(false);
   };
 
@@ -101,17 +104,21 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     if (currentQuantity > 1) {
       await updateCart(currentQuantity - 1, productId);
     } else if (currentQuantity === 1) {
-      deleteCart(productId);
+      deleteCartItem(productId);
     }
   };
 
-  const deleteCart = async (id: string) => {
+  const deleteCartItem = async (id: string, name?: string) => {
     setLoading(true);
 
-    const res = await deleteCartItem(id);
+    const res = await deleteCartItemAction(id);
     if (!res?.error) {
       handleCart();
+      if (name) {
+        toast(`${name} has been removed from your cart.`);
+      }
     }
+
     setLoading(false);
   };
 
@@ -139,7 +146,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         incrementCart,
         decrementCart,
         clearCart,
-        deleteCart,
+        deleteCartItem,
       }}
     >
       {children}

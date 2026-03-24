@@ -1,12 +1,39 @@
 import DeleteIcon from "@/components/Icons/DeleteIcon";
 import Button from "@/components/UI/Button";
 import MainWrapper from "@/components/UI/MainWrapper";
-import { useCart } from "@/context/cart-context";
+import { handleCartAction } from "@/utils/actions";
 import { dollarsPrice } from "@/utils/utils";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Link,
+  notFound,
+  useRouter,
+} from "@tanstack/react-router";
 
 export const Route = createFileRoute("/cart/")({
   component: RouteComponent,
+  loader: async () => {
+    const cart = await handleCartAction();
+    if (!cart || !cart.cart_items || cart.cart_items.length < 1) {
+      throw notFound();
+    }
+    const val = cart.cart_items
+      .map((item) => item.total_price)
+      .reduce((a, b) => a && b && a + b);
+    if (!val) {
+      throw notFound();
+    }
+    return { cart, val };
+  },
+
+  notFoundComponent: () => {
+    return (
+      <MainWrapper>
+        <div>Cart empty. Try adding items to your cart.</div>
+      </MainWrapper>
+    );
+  },
+
   head: () => ({
     meta: [
       {
@@ -20,15 +47,16 @@ export const Route = createFileRoute("/cart/")({
 });
 
 function RouteComponent() {
-  const { cart, deleteCart } = useCart();
-  if (!cart || !cart.cart_items) {
-    return (
-      <MainWrapper>
-        <div>Cart empty. Try adding items to your cart.</div>
-      </MainWrapper>
-    );
-  }
-  console.log(cart);
+  const { cart, val } = Route.useLoaderData();
+  const {
+    cartContext: { deleteCartItem },
+  } = Route.useRouteContext();
+  const router = useRouter();
+  const handleDelete = async (id: string, name: string) => {
+    await deleteCartItem(id, name);
+
+    router.load();
+  };
   return (
     <MainWrapper>
       <div className="flex flex-row gap-2">
@@ -62,7 +90,9 @@ function RouteComponent() {
                 <div>{dollarsPrice(item.total_price!)}</div>
                 <Button
                   className="w-fit h-fit bg-black/0 hover:bg-black/50 p-2"
-                  onClick={() => deleteCart(item.product.id)}
+                  onClick={() =>
+                    handleDelete(item.product.id, item.product.name)
+                  }
                 >
                   <DeleteIcon />
                 </Button>
@@ -71,15 +101,7 @@ function RouteComponent() {
           ))}
         </div>
         <div className="flex-1/5 flex flex-col">
-          <div className="mx-auto">
-            Total:{" "}
-            {cart.cart_items &&
-              dollarsPrice(
-                cart.cart_items
-                  .map((item) => item.total_price)
-                  .reduce((a, b) => a && b && a + b)!,
-              )}
-          </div>
+          <div className="mx-auto">Total:{dollarsPrice(val)}</div>
           <div>
             <Link to="/checkout" search={() => ({ cartId: cart.id })}>
               <Button className="w-full my-2 py-2 bg-black text-white rounded-md cursor-pointer">

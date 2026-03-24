@@ -148,7 +148,7 @@ export const handleCartAction = async () => {
     },
   });
   if (res.ok) {
-    const data = await res.json();
+    const data: Cart = await res.json();
     console.log(data);
     return data;
   }
@@ -240,7 +240,7 @@ export const updateCartAction = async ({
   }
 };
 
-export const deleteCartItem = async (id: string) => {
+export const deleteCartItemAction = async (id: string) => {
   try {
     const res = await fetch(`${apiDomain}/api/cart/${id}/item`, {
       method: "DELETE",
